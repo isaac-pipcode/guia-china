@@ -1,0 +1,522 @@
+{
+ "Xi'an": [
+  {
+   "nome": "Gran Melia Xian",
+   "estrelas": "5",
+   "nota": "4,8",
+   "avaliacoes": "122"
+  },
+  {
+   "nome": "Canopy by Hilton Xi'an Qujiang",
+   "estrelas": "4",
+   "nota": "4,8",
+   "avaliacoes": "32"
+  },
+  {
+   "nome": "Grand Hyatt Xi An",
+   "estrelas": "4",
+   "nota": "4,7",
+   "avaliacoes": "156"
+  },
+  {
+   "nome": "Bell Tower Hotel Xian",
+   "estrelas": "4",
+   "nota": "4,6",
+   "avaliacoes": "129"
+  },
+  {
+   "nome": "Delta Hotels BY Marriott Xi'an",
+   "estrelas": "5",
+   "nota": "4,6",
+   "avaliacoes": "50"
+  },
+  {
+   "nome": "King Town No.1 Hotel",
+   "estrelas": "3",
+   "nota": "4,6",
+   "avaliacoes": "9"
+  },
+  {
+   "nome": "Hilton Xi'an",
+   "estrelas": "5",
+   "nota": "4,5",
+   "avaliacoes": "191"
+  },
+  {
+   "nome": "Sofitel Xian On Renmin Square",
+   "estrelas": "5",
+   "nota": "4,5",
+   "avaliacoes": "161"
+  }
+ ],
+ "Datong": [
+  {
+   "nome": "Yunzhong Yi Traditional Inn",
+   "estrelas": "5",
+   "nota": "5,0",
+   "avaliacoes": "6"
+  },
+  {
+   "nome": "Hampton by Hilton Datong",
+   "estrelas": "3",
+   "nota": "5,0",
+   "avaliacoes": "2"
+  },
+  {
+   "nome": "Pipa Inn",
+   "estrelas": "4",
+   "nota": "4,8",
+   "avaliacoes": "26"
+  },
+  {
+   "nome": "Datong Weidu International Hotel",
+   "estrelas": "5",
+   "nota": "4,6",
+   "avaliacoes": "13"
+  },
+  {
+   "nome": "Wyndham Grand Plaza Royale Datong",
+   "estrelas": "2",
+   "nota": "4,5",
+   "avaliacoes": "10"
+  },
+  {
+   "nome": "Holiday Inn Datong City Centre",
+   "estrelas": "4",
+   "nota": "4,4",
+   "avaliacoes": "10"
+  },
+  {
+   "nome": "Four Points Datong Pingcheng",
+   "estrelas": "4",
+   "nota": "4,2",
+   "avaliacoes": "5"
+  },
+  {
+   "nome": "Great Palace Hotel Datong",
+   "estrelas": "5",
+   "nota": "4,0",
+   "avaliacoes": "24"
+  }
+ ],
+ "Pingyao": [
+  {
+   "nome": "Jings Residence",
+   "estrelas": "5",
+   "nota": "4,9",
+   "avaliacoes": "20"
+  },
+  {
+   "nome": "Water Hotel, Pingyao",
+   "estrelas": "5",
+   "nota": "4,8",
+   "avaliacoes": "11"
+  },
+  {
+   "nome": "Pingyao Xiangshengyuan Guest House",
+   "estrelas": "3",
+   "nota": "4,8",
+   "avaliacoes": "6"
+  },
+  {
+   "nome": "International Financier Club",
+   "estrelas": "5",
+   "nota": "4,8",
+   "avaliacoes": "4"
+  },
+  {
+   "nome": "ELseWhere-LeiFu Hotel",
+   "estrelas": "5",
+   "nota": "4,6",
+   "avaliacoes": "23"
+  },
+  {
+   "nome": "Yide Hotel",
+   "estrelas": "5",
+   "nota": "4,4",
+   "avaliacoes": "99"
+  },
+  {
+   "nome": "Cheng Shi Ge Inn",
+   "estrelas": "3",
+   "nota": null,
+   "avaliacoes": null
+  }
+ ],
+ "Chongqing": [
+  {
+   "nome": "Intercontinental Chongqing Raffles City",
+   "estrelas": "5",
+   "nota": "4,7",
+   "avaliacoes": "88"
+  },
+  {
+   "nome": "Regent Chongqing",
+   "estrelas": "5",
+   "nota": "4,5",
+   "avaliacoes": "72"
+  },
+  {
+   "nome": "Hilton Chongqing Liangjiang New Area",
+   "estrelas": "4",
+   "nota": "4,5",
+   "avaliacoes": "30"
+  },
+  {
+   "nome": "Golden View Hotel",
+   "estrelas": "4",
+   "nota": "4,5",
+   "avaliacoes": "2"
+  },
+  {
+   "nome": "Hilton Chongqing",
+   "estrelas": "5",
+   "nota": "4,4",
+   "avaliacoes": "158"
+  },
+  {
+   "nome": "JW Marriott Hotel Chongqing",
+   "estrelas": "5",
+   "nota": "4,3",
+   "avaliacoes": "235"
+  },
+  {
+   "nome": "洪崖洞大酒店",
+   "estrelas": "4",
+   "nota": "4,3",
+   "avaliacoes": "15"
+  },
+  {
+   "nome": "Howard Johnson Xiushan Plaza Chongqing",
+   "estrelas": "4",
+   "nota": "4,3",
+   "avaliacoes": "12"
+  }
+ ],
+ "Changsha": [
+  {
+   "nome": "Hampton by Hilton Changsha South Railway Station",
+   "estrelas": "4",
+   "nota": "4,9",
+   "avaliacoes": "7"
+  },
+  {
+   "nome": "Ramada By Wyndham Changsha Tianxin",
+   "estrelas": "2",
+   "nota": "4,8",
+   "avaliacoes": "4"
+  },
+  {
+   "nome": "Hilton Changsha Riverside",
+   "estrelas": "5",
+   "nota": "4,7",
+   "avaliacoes": "21"
+  },
+  {
+   "nome": "Exotic Royal Hotel",
+   "estrelas": "4",
+   "nota": "4,6",
+   "avaliacoes": "26"
+  },
+  {
+   "nome": "Courtyard by Marriott Changsha South",
+   "estrelas": "4",
+   "nota": "4,5",
+   "avaliacoes": "36"
+  },
+  {
+   "nome": "Grand Hyatt Changsha",
+   "estrelas": "4",
+   "nota": "4,5",
+   "avaliacoes": "30"
+  },
+  {
+   "nome": "Vienna International Hotel Changsha West Bus Station",
+   "estrelas": "4",
+   "nota": "4,5",
+   "avaliacoes": "4"
+  },
+  {
+   "nome": "Changsha Quansheng Tongfu Hotel",
+   "estrelas": "2",
+   "nota": "4,5",
+   "avaliacoes": "2"
+  }
+ ],
+ "Shanghai": [
+  {
+   "nome": "Shanghai Jianyeli Capella Hotel",
+   "estrelas": "5",
+   "nota": "4,8",
+   "avaliacoes": "65"
+  },
+  {
+   "nome": "The Ritz-Carlton Shanghai, Pudong",
+   "estrelas": "5",
+   "nota": "4,6",
+   "avaliacoes": "918"
+  },
+  {
+   "nome": "Shanghai Marriott Hotel Pudong East",
+   "estrelas": "5",
+   "nota": "4,6",
+   "avaliacoes": "237"
+  },
+  {
+   "nome": "Atour Hotel Shanghai Bund Nanjing East Road",
+   "estrelas": "4",
+   "nota": "4,6",
+   "avaliacoes": "189"
+  },
+  {
+   "nome": "InterContinental Shanghai Puxi",
+   "estrelas": "5",
+   "nota": "4,5",
+   "avaliacoes": "426"
+  },
+  {
+   "nome": "Four Seasons Hotel Shanghai",
+   "estrelas": "5",
+   "nota": "4,5",
+   "avaliacoes": "299"
+  },
+  {
+   "nome": "Shanghai Marriott Hotel City Centre",
+   "estrelas": "5",
+   "nota": "4,5",
+   "avaliacoes": null
+  },
+  {
+   "nome": "The Portman Ritz-Carlton, Shanghai",
+   "estrelas": "5",
+   "nota": "4,4",
+   "avaliacoes": "806"
+  }
+ ],
+ "Hangzhou": [
+  {
+   "nome": "Homeinn Selected (Hangzhou West Lake Hubin St Branch)",
+   "estrelas": "2",
+   "nota": "5,0",
+   "avaliacoes": "4"
+  },
+  {
+   "nome": "Hangzhou Sansu Hotel",
+   "estrelas": "3",
+   "nota": "5,0",
+   "avaliacoes": "4"
+  },
+  {
+   "nome": "Pod Inn",
+   "estrelas": "2",
+   "nota": "5,0",
+   "avaliacoes": "1"
+  },
+  {
+   "nome": "Holiday Inn Express Hangzhou Jiuzhou",
+   "estrelas": "3",
+   "nota": "4,7",
+   "avaliacoes": "17"
+  },
+  {
+   "nome": "Holiday Inn Express Hangzhou Airport, an IHG Hotel",
+   "estrelas": "4",
+   "nota": "4,5",
+   "avaliacoes": "13"
+  },
+  {
+   "nome": "Holiday Inn Express Hangzhou Huanglong",
+   "estrelas": "4",
+   "nota": "4,2",
+   "avaliacoes": "84"
+  },
+  {
+   "nome": "Hangzhou Grand Metropark Hotel",
+   "estrelas": "5",
+   "nota": "4,1",
+   "avaliacoes": "73"
+  },
+  {
+   "nome": "Zhijiang Hotel Hangzhou",
+   "estrelas": "4",
+   "nota": "3,9",
+   "avaliacoes": "16"
+  }
+ ],
+ "Nanjing": [
+  {
+   "nome": "Mercure Nanjing Downtown (Opening November 2019)",
+   "estrelas": "4",
+   "nota": "4,7",
+   "avaliacoes": "12"
+  },
+  {
+   "nome": "Crowne Plaza Nanjing Jiangning",
+   "estrelas": "5",
+   "nota": "4,6",
+   "avaliacoes": "92"
+  },
+  {
+   "nome": "Marriott Nanjing South",
+   "estrelas": "5",
+   "nota": "4,6",
+   "avaliacoes": "71"
+  },
+  {
+   "nome": "Fairmont Nanjing",
+   "estrelas": "5",
+   "nota": "4,6",
+   "avaliacoes": "58"
+  },
+  {
+   "nome": "Lakeview Xuanwu Hotel",
+   "estrelas": "5",
+   "nota": "4,5",
+   "avaliacoes": "33"
+  },
+  {
+   "nome": "Central Hotel （West Gate）",
+   "estrelas": "5",
+   "nota": "4,4",
+   "avaliacoes": "62"
+  },
+  {
+   "nome": "Holiday Inn Nanjing Harbour",
+   "estrelas": "5",
+   "nota": "4,4",
+   "avaliacoes": "45"
+  },
+  {
+   "nome": "Nanjing Shangmao International Hotel",
+   "estrelas": "5",
+   "nota": "4,4",
+   "avaliacoes": "5"
+  }
+ ],
+ "Zhangjiajie": [
+  {
+   "nome": "Yunmengqi Boutique Inn",
+   "estrelas": "3",
+   "nota": "5,0",
+   "avaliacoes": "5"
+  },
+  {
+   "nome": "Hampton by Hilton Zhangjiajie Tianmen Mountain",
+   "estrelas": "3",
+   "nota": "4,7",
+   "avaliacoes": "141"
+  },
+  {
+   "nome": "one step to heaven inn",
+   "estrelas": "2",
+   "nota": "4,1",
+   "avaliacoes": "7"
+  },
+  {
+   "nome": "Vienna International Hotel Zhangjiajie Tianmen Mountain",
+   "estrelas": "3",
+   "nota": "3,6",
+   "avaliacoes": "14"
+  },
+  {
+   "nome": "Zhangjiajie Tianzi Shangyuan Inn",
+   "estrelas": "4",
+   "nota": null,
+   "avaliacoes": null
+  }
+ ],
+ "Guilin": [
+  {
+   "nome": "Qingsanshe Art Inn",
+   "estrelas": "4",
+   "nota": "5,0",
+   "avaliacoes": "4"
+  },
+  {
+   "nome": "The Bamboo Leaf Yangshuo",
+   "estrelas": "4",
+   "nota": "4,7",
+   "avaliacoes": "80"
+  },
+  {
+   "nome": "Aroma Tea House",
+   "estrelas": "5",
+   "nota": "4,6",
+   "avaliacoes": "86"
+  },
+  {
+   "nome": "Shangri-La Hotel",
+   "estrelas": "5",
+   "nota": "4,5",
+   "avaliacoes": "304"
+  },
+  {
+   "nome": "Guilin Bravo Hotel",
+   "estrelas": "4",
+   "nota": "4,4",
+   "avaliacoes": "121"
+  },
+  {
+   "nome": "Grand Bravo Hotel",
+   "estrelas": "5",
+   "nota": "4,4",
+   "avaliacoes": "33"
+  },
+  {
+   "nome": "Tai Lian",
+   "estrelas": "3",
+   "nota": "4,2",
+   "avaliacoes": "65"
+  },
+  {
+   "nome": "Guilin Lijiang Waterfall Hotel",
+   "estrelas": "5",
+   "nota": "4,1",
+   "avaliacoes": "212"
+  }
+ ],
+ "Huangshan": [
+  {
+   "nome": "Paiyunlou Hotel",
+   "estrelas": "4",
+   "nota": "4,7",
+   "avaliacoes": "9"
+  },
+  {
+   "nome": "Days Suites Bojing Huangshan",
+   "estrelas": "3",
+   "nota": "4,7",
+   "avaliacoes": "3"
+  },
+  {
+   "nome": "Crowne Plaza Huangshan Yucheng",
+   "estrelas": "5",
+   "nota": "4,4",
+   "avaliacoes": "141"
+  },
+  {
+   "nome": "Xihai Hotel HuangShan",
+   "estrelas": "4",
+   "nota": "4,2",
+   "avaliacoes": "71"
+  },
+  {
+   "nome": "翠林大酒店",
+   "estrelas": "4",
+   "nota": "4,0",
+   "avaliacoes": "2"
+  },
+  {
+   "nome": "黄山杭州假日酒店",
+   "estrelas": "4",
+   "nota": null,
+   "avaliacoes": null
+  },
+  {
+   "nome": "云海楼",
+   "estrelas": "2",
+   "nota": null,
+   "avaliacoes": null
+  }
+ ]
+}
