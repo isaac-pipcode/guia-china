@@ -411,23 +411,31 @@ def main():
             f'<td>{pt}</td><td class="zh">{zh}</td><td class="py">{py}</td></tr>')
     filtros = "".join(f'<a href="#" class="chipf" data-cat="{c}">{c}</a>' for c in cats)
 
-    # ---------- vídeos ----------
-    VIDEOS = []  # preencha com dicts: titulo, canal, url, duracao, insights[list]
-    if VIDEOS:
-        cards_video = "".join(
-            f"""<article class="vcard">
-      <h3>{v['titulo']}</h3>
-      <p class="fine">{v['canal']} · {v.get('duracao','')}</p>
-      <ul class="tight">{''.join(f'<li>{i}</li>' for i in v['insights'])}</ul>
-      <a class="btn ghost" href="{v['url']}" target="_blank" rel="noopener">Assistir</a>
-    </article>""" for v in VIDEOS)
-    else:
-        cards_video = """<div class="vazio">
-      <b>Ainda sem vídeos</b>
-      <p>Mande os links do YouTube que o Isaac separou: eu assisto, extraio os insights principais
-      e cada vídeo entra aqui como um cartão com resumo, duração e canal.</p>
-      <p class="fine">Formato sugerido: link + por que vale (ex.: logística de trem, hutong, comida de rua).</p>
-    </div>"""
+    # ---------- referências ----------
+    REFS = [
+        dict(tipo="Artigo", titulo="Onde ficar em Pequim: melhores bairros e hotéis",
+             fonte="Mala de Aventuras (Nanda Hudson)", data="atualizado em 10/04/2025",
+             url="https://www.maladeaventuras.com/onde-ficar-em-pequim/",
+             insights=[
+                 "Escolhe quatro bases: <b>Wangfujing</b> (melhor para primeira viagem, dá para ir a pé às atrações; ponto fraco é o movimento 24h), <b>Sanlitun</b> (vida noturna em Chaoyang, muitos estrangeiros, hotéis para todos os bolsos), <b>Qianmen</b> (a mais barata, arquitetura tradicional, ao sul do centro) e <b>CBD</b> (luxo).",
+                 "Critério de seleção: nota <b>≥ 8 no Booking</b> — em outra escala da que usamos aqui (Google, 0–5). O Holiday Inn Express Dongzhimen aparece com <b>8,9/10</b>, coerente com o 4,4/5 que levantamos.",
+                 "Confirma dois dos nossos finalistas: <b>Holiday Inn Express Dongzhimen</b> e <b>Ascott Raffles City</b> — mas os classifica como “Sanlitun”, porque ficam na borda leste, não no centro histórico.",
+                 "Não trata de <b>Gulou/Shichahai</b> nem de <b>Dongzhimen</b> como base própria: é exatamente o recorte que interessa a quem quer hutong e comida, e não vida noturna.",
+                 "Para 4 pessoas: a lista de “conforto” de Wangfujing (Grand Hyatt, Hilton Wangfujing, Beijing Hotel NUO) é a que resolve dois quartos no mesmo prédio, a pé da Cidade Proibida.",
+             ]),
+    ]
+
+    def card_ref(r):
+        ico = "📄" if r["tipo"] == "Artigo" else "▶️"
+        itens = "".join(f"<li>{i}</li>" for i in r["insights"])
+        return f"""<article class="vcard">
+      <h3>{ico} {r['titulo']}</h3>
+      <p class="fine">{r['fonte']} · {r['data']}</p>
+      <ul class="tight">{itens}</ul>
+      <a class="btn ghost" href="{r['url']}" target="_blank" rel="noopener">Abrir original</a>
+    </article>"""
+
+    cards_video = "".join(card_ref(r) for r in REFS)
 
     html = f"""<!DOCTYPE html>
 <html lang="pt-BR">
@@ -460,7 +468,7 @@ def main():
       <a role="tab" href="#preparo" data-tab="preparo" aria-selected="false">Preparo</a>
       <a role="tab" href="#roteiro-dia" data-tab="roteiro-dia" aria-selected="false">Roteiro dia a dia</a>
       <a role="tab" href="#tradutor" data-tab="tradutor" aria-selected="false">Tradutor</a>
-      <a role="tab" href="#videos" data-tab="videos" aria-selected="false">Vídeos</a>
+      <a role="tab" href="#videos" data-tab="videos" aria-selected="false">Referências</a>
     </nav>
   </div>
 </div>
@@ -655,7 +663,7 @@ def main():
 </section>
 
 <section role="tabpanel" id="tab-videos">
-  <h2>Vídeos de referência<span class="sub">Links do YouTube com os insights que interessam para esta viagem.</span></h2>
+  <h2>Referências<span class="sub">Artigos e vídeos que lemos, com os insights que interessam para esta viagem.</span></h2>
   <div class="grid">{cards_video}</div>
 </section>
 
