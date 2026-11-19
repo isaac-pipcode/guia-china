@@ -287,6 +287,102 @@ def main():
     pontos_json = json.dumps([{k: c[k] for k in ("id", "nome", "lat", "lon", "noites", "datas", "emoji")}
                               for c in CIDADES], ensure_ascii=False)
 
+    # ---------- roteiro dia a dia ----------
+    DIA = [
+        ("🏯 Pequim", "7 noites · 30/12 a 06/01", [
+            ("30/12 qua", "Chegada 18:45 em Pequim, check-in em Dongzhimen", "Jantar na Gui Jie (rua dos restaurantes)", "Dormir cedo: fuso de +11h"),
+            ("31/12 qui", "Grande Muralha em Mutianyu — sair 7:30", "Volta no fim da tarde", "Hutong à noite, sem plano"),
+            ("01/01 sex", "Amanhecer na praça Tiananmen (sol 07:36) + Templo do Céu", "Almoço em hutong, tarde totalmente livre", "Feriado: evitar shopping e trem"),
+            ("02/01 sáb", "Cidade Proibida (reserva feita em 25/12) + Parque Jingshan", "Chá e livraria em Qianmen/Yangmeizhu", "Pato laqueado em restaurante tradicional"),
+            ("03/01 dom", "Templo Lama + Templo de Confúcio", "Shichahai: patinação no gelo ou caminhada", "Bar em hutong, sem hora"),
+            ("04/01 seg", "Palácio de Verão (museus fecham às segundas)", "Parque Beihai", "Dia leve de propósito"),
+            ("05/01 ter", "Museu Nacional (reserva em 29/12)", "798 Art District", "Última noite em Pequim 1"),
+            ("06/01 qua", "Manhã livre para compras e café", "Trem para Datong (venda ~21/12)", "—"),
+        ]),
+        ("🗿 Datong", "2 noites · 06 a 08/01", [
+            ("06/01 qua", "Chegada, almoço local", "Muralha de Datong ao entardecer", "Frio extremo: −13 °C à noite"),
+            ("07/01 qui", "Grutas de Yungang (3h, sair cedo)", "Templo Huayan, século XI", "Jantar de noodles da Shanxi"),
+            ("08/01 qui", "Templo Suspenso de Xuankong (1h15 de carro)", "Trem para Pingyao", "Levar casaco na mochila"),
+        ]),
+        ("🏮 Pingyao", "2 noites · 08 a 10/01", [
+            ("08/01 qui", "Chegada, check-in dentro do muro", "Ruas de pedra e lanternas ao anoitecer", "Quando o turismo interno sai, a cidade é outra"),
+            ("09/01 sex", "Muralha Ming (passe de 3 dias)", "Rishengchang e Templo Shuanglin", "Jantar em casa de família"),
+            ("10/01 sáb", "Manhã sem plano dentro do muro", "Trem para Xi'an", "—"),
+        ]),
+        ("🏛️ Xi'an", "3 noites · 10 a 13/01", [
+            ("10/01 sáb", "Chegada, Chá e muro ao entardecer", "Bairro Muçulmano: comida de rua", "Melhor comida de rua da viagem"),
+            ("11/01 dom", "Exército de Terracota (meio dia)", "Tarde livre no centro", "Reservar ingresso antes"),
+            ("12/01 seg", "Museu de Shaanxi (fecha segundas — checar)", "Muralha de bicicleta, 14 km", "Se o museu fechar, trocar por Grande Mesquita"),
+            ("13/01 ter", "Monte Hua (dia inteiro) ou manhã livre", "Trem para Chongqing (5h)", "Monte Hua só se não houver neve"),
+        ]),
+        ("🌉 Chongqing", "2 noites · 13 a 15/01", [
+            ("13/01 ter", "Chegada, check-in", "Hongya Cave à noite (acende ~19:00)", "Hotpot na origem"),
+            ("14/01 qua", "Museu dos Três Gargantas (reserva)", "Teleférico do Yangtzé + Estação Liziba", "Cidade vertical: escadarias"),
+            ("15/01 qui", "Ciqikou de manhã", "Trem para o bloco de natureza", "—"),
+        ]),
+    ]
+
+    DIA_VARIANTES = [
+        ("🌄 Opção A · Zhangjiajie", "3 noites · 15 a 18/01", [
+            ("15/01 qui", "Trem de Chongqing (4h30)", "Wulingyuan: reconhecimento, sem plano", "Dormir dentro do parque"),
+            ("16/01 sex", "Yuanjiajie e os pilares de Avatar", "Trilhas leves até o fim da tarde", "52% dos dias encobertos em janeiro"),
+            ("17/01 sáb", "Monte Tianmen ou Elevador Bailong", "Segundo setor do parque", "Dia reserva para o caso de neblina"),
+            ("18/01 dom", "Manhã livre", "Trem para Changsha", "—"),
+        ]),
+        ("🛶 Opção B · Guilin e Yangshuo", "3 noites · 17 a 20/01", [
+            ("17/01 dom", "Trem até Guilin, base em Yangshuo", "Vila à beira do rio, sem plano", "Clima mais ameno: 15 °C"),
+            ("18/01 seg", "Cruzeiro no Rio Li (4h)", "Bicicleta entre arrozais e karst", "O dia mais bonito da variante"),
+            ("19/01 ter", "Terraços de Longji (2h de carro)", "Tarde livre em Yangshuo", "Terraços secos em janeiro"),
+            ("20/01 qua", "Manhã livre", "Voo para Xangai", "Resolve o trecho longo"),
+        ]),
+        ("⛰️ Opção C · Huangshan", "1 noite · 23 a 24/01", [
+            ("23/01 sáb", "Trem de Hangzhou (1h30), teleférico", "Picos Yuping/Beihai, dormir no alto", "Gelo: crampon obrigatório"),
+            ("24/01 dom", "Nascer do sol no topo", "Descer a pé e seguir para Nanjing", "Uma noite cobre um setor"),
+        ]),
+    ]
+
+    DIA_FINAL = [
+        ("🌶️ Changsha", "2 noites · 18 a 20/01 (A) ou 15 a 17/01 (B/C)", [
+            ("dia 1", "Academia Yuelu (976 d.C.)", "Museu de Hunan: múmia de Lady Dai (reserva)", "Cozinha de Hunan, apimentada de verdade"),
+            ("dia 2", "Ilha Laranja", "Rua pedestre, comida de rua local", "Dia sem atração marcada"),
+        ]),
+        ("🏙️ Xangai", "3 noites · 20 a 23/01 (C: 17 a 22/01)", [
+            ("20/01 qua", "Chegada, O Bund ao entardecer", "Jantar na Concessão Francesa", "Bund melhor quando acendem as luzes"),
+            ("21/01 qui", "Museu de Xangai (reserva)", "Wukang Road e Tianzifang", "Ritmo de cidade grande"),
+            ("22/01 sex", "Suzhou (25 min de trem) ou dia livre", "Jardins UNESCO, canais", "Escolher 2 jardins, não 4"),
+            ("23/01 sáb", "Manhã livre, Jardim Yu", "Trem para Hangzhou (1h)", "—"),
+        ]),
+        ("🍵 Hangzhou", "1 noite · 23 a 24/01", [
+            ("23/01 sáb", "Chegada, Lago Oeste ao entardecer", "Bicicleta na margem do lago", "Lugar mais pintado da China"),
+            ("24/01 dom", "Templo Lingyin de manhã", "Chá Longjing em Meijiawu e trem para Nanjing", "Dia curto por definição"),
+        ]),
+        ("🕯️ Nanjing", "1 noite · 24 a 25/01", [
+            ("24/01 dom", "Chegada no fim da tarde", "Rio Qinhuai à noite", "Jantar sem plano"),
+            ("25/01 seg", "Memorial do Massacre de 1937 (2h30, reserva)", "Muralha Ming e trem para Pequim", "Austero: não é lugar de foto"),
+        ]),
+        ("✈️ Pequim · fechamento", "1 noite · 25 a 26/01", [
+            ("25/01 seg", "Chegada de trem no fim do dia", "Jantar leve perto do hotel", "Hotel com recepção 24h"),
+            ("26/01 ter", "Dia inteiro sem plano: compras, hutong, café", "Descanso à tarde", "Sair para o aeroporto à 00:45 do dia 27"),
+        ]),
+    ]
+
+    def bloco_dia(titulo, subt, dias):
+        linhas = "".join(
+            f"<tr><td><b>{d}</b></td><td>{m}</td><td>{t}</td><td class='fine'>{o}</td></tr>"
+            for d, m, t, o in dias)
+        return f"""  <h2>{titulo}<span class="sub">{subt}</span></h2>
+  <div class="tw"><table>
+    <thead><tr><th>Dia</th><th>Manhã</th><th>Tarde</th><th>Noite / observação</th></tr></thead>
+    <tbody>{linhas}</tbody>
+  </table></div>
+"""
+
+    blocos_dia = "".join(bloco_dia(*b) for b in DIA)
+    blocos_dia += "  <h2>O bloco de natureza<span class=\"sub\">Escolha uma das três: a rotina de cada uma, dia a dia.</span></h2>\n"
+    blocos_dia += "".join(bloco_dia(*b) for b in DIA_VARIANTES)
+    blocos_dia += "  <h2>O fim da viagem<span class=\"sub\">Do delta do Yangtzé de volta a Pequim, para o voo das 02:45.</span></h2>\n"
+    blocos_dia += "".join(bloco_dia(*b) for b in DIA_FINAL)
+
     html = f"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -316,6 +412,7 @@ def main():
       <a role="tab" href="#hoteis" data-tab="hoteis" aria-selected="false">Hospedagens</a>
       <a role="tab" href="#passeios" data-tab="passeios" aria-selected="false">Passeios</a>
       <a role="tab" href="#preparo" data-tab="preparo" aria-selected="false">Preparo</a>
+      <a role="tab" href="#roteiro-dia" data-tab="roteiro-dia" aria-selected="false">Roteiro dia a dia</a>
     </nav>
   </div>
 </div>
@@ -341,19 +438,7 @@ def main():
 
   <h2>Cidades, uma por uma<span class="sub">Atrações, hospedagem, valor com rateio e programação sugerida.</span></h2>
   {"".join(blocos)}
-</section>  <section role="tabpanel" id="roteiro-dia" class="">
-    <h2>Roteiro dia a dia<span class="sub">Com margem para se perder e aproveitar a cidade. Cada bloco tem o essencial e o que pode pular.</span></h2>
-    <div class="grid">
-      <div class="card"><b>🏯 Pequim (7 noites)</b><span>Cidade Proibida, Templo do Céu, Muralha, hutongs, momentos livres.</span></div>
-      <div class="card"><b>🗿 Datong (2 noites)</b><span>Grutas de Yungang, Templo Suspenso, margem livre.</span></div>
-      <div class="card"><b>🏮 Pingyao (2 noites)</b><span>Muralha Ming, Rishengchang, noite na cidade murada.</span></div>
-      <div class="card"><b>🏛️ Xi'an (3 noites)</b><span>Terracota, Muralha de bicicleta, Bairro Muçulmano.</span></div>
-      <div class="card"><b>🌉 Chongqing (2 noites)</b><span>Hongya Cave, Museu das Gargantes, Ciqikou.</span></div>
-      <div class="card"><b>🌶️ Changsha (2 noites)</b><span>Academia Yuelu, Museu de Hunan, Ilha Laranja.</span></div>
-      <div class="card"><b>🏙️ Xangai (3 noites)</b><span>O Bund, Concessão Francesa, Jardim Yu, momentos livres.</span></div>
-      <div class="card"><b>🍵 Hangzhou (1 noite)</b><span>Lago Oeste, Templo Lingyin, chá Longjing.</span></div>
-      <div class="card"><b>🕯️ Nanjing (1 noite)</b><span>Memorial 1937, Muralha Ming.</span></div>
-    </div>
+</section>
 
 <section role="tabpanel" id="tab-aereo">
   <h2>Passagens aéreas<span class="sub">Air China · localizador 5HAJHF · emitido em 13/10/2026</span></h2>
@@ -494,6 +579,12 @@ def main():
     </tbody>
   </table></div>
   <p class="fine">Cotação de referência em 05/10/2026: ¥1 = R$ 0,776.</p>
+</section>
+
+<section role="tabpanel" id="tab-roteiro-dia">
+  <h2>Roteiro dia a dia<span class="sub">O plano hora a hora, com espaço deliberado para se perder. Cada linha tem uma tarde ou noite sem atração marcada.</span></h2>
+  <p class="look">Este é o roteiro completo do circuito atual — 27 noites, entrada e saída por Pequim. Se o grupo decidir cortar cidades, os blocos de <b>Changsha</b>, <b>Hangzhou</b> e <b>Nanjing</b> são os primeiros candidatos, e a aba mostra exatamente o que se perde em cada um.</p>
+  {blocos_dia}
 </section>
 
 <footer>
