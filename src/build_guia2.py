@@ -13,6 +13,87 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # raiz do re
 IMG = os.path.join(BASE, "img")
 DATA = os.path.join(BASE, "data")
 
+EXTRA_CSS = """
+.daycard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0;box-shadow:0 1px 2px rgba(15,23,42,.03)}
+.daycard .dh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.daycard .dh h3{margin:0;font-size:18px}
+.daycard .dh .pill{font-size:12px;font-weight:600;color:var(--muted);background:#f1f3f6;border-radius:999px;padding:4px 10px}
+.dphoto{width:100%;height:210px;object-fit:cover;object-position:center 62%;border-radius:12px;display:block;margin-bottom:12px}
+.dres{color:#374151;margin:0 0 12px}
+.daycard h4{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:14px 0 4px}
+h2.sep{margin-top:44px}
+.trad-top{display:block;margin:6px 0 12px}
+#busca,#livre{display:inline-block;width:100%;max-width:520px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff;margin:0 8px 8px 0;vertical-align:middle}
+#busca:focus,#livre:focus{outline:2px solid #cfe0ee;border-color:#9fc3e0}
+.chipsf{display:block;margin-bottom:12px}
+.chipf{display:inline-block;text-decoration:none;border:1px solid var(--line);background:#fff;color:var(--muted);font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:999px;cursor:pointer;margin:0 6px 6px 0}
+.chipf.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+table.trad td.zh{font-size:17px;font-weight:600;white-space:nowrap}
+table.trad td.py{color:var(--muted);font-size:13px}
+table.trad tbody tr{cursor:pointer}
+table.trad tbody tr:hover td{background:#f4f8fb}
+.livre{display:block;margin-top:14px}
+.livre .btn{margin:0;cursor:pointer;border:0;font-family:inherit}
+#overlay{position:fixed;inset:0;background:rgba(8,15,26,.94);color:#fff;display:none;align-items:center;justify-content:center;z-index:2000;padding:24px;text-align:center}
+#overlay.on{display:flex}
+#overlay .big{font-size:clamp(48px,14vw,120px);line-height:1.1;font-weight:700;letter-spacing:.02em}
+#overlay .py{font-size:clamp(16px,3.4vw,24px);color:#9fc3e0;margin-top:14px}
+#overlay .pt{font-size:clamp(14px,2.6vw,18px);color:#cbd5e1;margin-top:10px}
+#overlay .fechar{position:absolute;top:18px;right:22px;font-size:26px;color:#fff;background:none;border:0;cursor:pointer}
+.vazio{background:#fff;border:1px dashed #c9d2dc;border-radius:14px;padding:20px}
+.vazio b{display:block;font-size:15px;margin-bottom:6px}
+.vcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.vcard h3{margin:0 0 2px;font-size:16px}
+@media(max-width:620px){.dphoto{height:170px}}
+"""
+
+EXTRA_JS = """
+(function(){
+  const overlay = document.createElement('div');
+  overlay.id = 'overlay';
+  overlay.innerHTML = '<button class="fechar" aria-label="fechar">&times;</button><div><div class="big"></div><div class="py"></div><div class="pt"></div></div>';
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', () => overlay.classList.remove('on'));
+
+  document.querySelectorAll('table.trad tbody tr').forEach(tr => {
+    tr.addEventListener('click', () => {
+      overlay.querySelector('.big').textContent = tr.dataset.zh;
+      overlay.querySelector('.py').textContent = tr.dataset.py;
+      overlay.querySelector('.pt').textContent = tr.dataset.pt;
+      overlay.classList.add('on');
+    });
+  });
+
+  const busca = document.getElementById('busca');
+  const chipEls = document.querySelectorAll('.chipf');
+  let catAtiva = null;
+  function filtrar(){
+    const q = (busca.value || '').toLowerCase().trim();
+    document.querySelectorAll('table.trad tbody tr').forEach(tr => {
+      const okTexto = !q || tr.dataset.busca.includes(q);
+      const okCat = !catAtiva || tr.dataset.cat === catAtiva;
+      tr.style.display = (okTexto && okCat) ? '' : 'none';
+    });
+  }
+  if (busca) busca.addEventListener('input', filtrar);
+  chipEls.forEach(b => b.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    const c = b.dataset.cat;
+    catAtiva = (catAtiva === c) ? null : c;
+    chipEls.forEach(x => x.classList.toggle('on', x.dataset.cat === catAtiva));
+    filtrar();
+  }));
+
+  const btn = document.getElementById('btn-livre');
+  if (btn) btn.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    const t = document.getElementById('livre').value.trim();
+    const url = 'https://translate.google.com/?sl=pt&tl=zh-CN&text=' + encodeURIComponent(t) + '&op=translate';
+    window.open(url, '_blank');
+  });
+})();
+"""
+
 spec = importlib.util.spec_from_file_location("bg", os.path.join(BASE, "src", "build_guia.py"))
 bg = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(bg)
@@ -287,101 +368,66 @@ def main():
     pontos_json = json.dumps([{k: c[k] for k in ("id", "nome", "lat", "lon", "noites", "datas", "emoji")}
                               for c in CIDADES], ensure_ascii=False)
 
-    # ---------- roteiro dia a dia ----------
-    DIA = [
-        ("🏯 Pequim", "7 noites · 30/12 a 06/01", [
-            ("30/12 qua", "Chegada 18:45 em Pequim, check-in em Dongzhimen", "Jantar na Gui Jie (rua dos restaurantes)", "Dormir cedo: fuso de +11h"),
-            ("31/12 qui", "Grande Muralha em Mutianyu — sair 7:30", "Volta no fim da tarde", "Hutong à noite, sem plano"),
-            ("01/01 sex", "Amanhecer na praça Tiananmen (sol 07:36) + Templo do Céu", "Almoço em hutong, tarde totalmente livre", "Feriado: evitar shopping e trem"),
-            ("02/01 sáb", "Cidade Proibida (reserva feita em 25/12) + Parque Jingshan", "Chá e livraria em Qianmen/Yangmeizhu", "Pato laqueado em restaurante tradicional"),
-            ("03/01 dom", "Templo Lama + Templo de Confúcio", "Shichahai: patinação no gelo ou caminhada", "Bar em hutong, sem hora"),
-            ("04/01 seg", "Palácio de Verão (museus fecham às segundas)", "Parque Beihai", "Dia leve de propósito"),
-            ("05/01 ter", "Museu Nacional (reserva em 29/12)", "798 Art District", "Última noite em Pequim 1"),
-            ("06/01 qua", "Manhã livre para compras e café", "Trem para Datong (venda ~21/12)", "—"),
-        ]),
-        ("🗿 Datong", "2 noites · 06 a 08/01", [
-            ("06/01 qua", "Chegada, almoço local", "Muralha de Datong ao entardecer", "Frio extremo: −13 °C à noite"),
-            ("07/01 qui", "Grutas de Yungang (3h, sair cedo)", "Templo Huayan, século XI", "Jantar de noodles da Shanxi"),
-            ("08/01 qui", "Templo Suspenso de Xuankong (1h15 de carro)", "Trem para Pingyao", "Levar casaco na mochila"),
-        ]),
-        ("🏮 Pingyao", "2 noites · 08 a 10/01", [
-            ("08/01 qui", "Chegada, check-in dentro do muro", "Ruas de pedra e lanternas ao anoitecer", "Quando o turismo interno sai, a cidade é outra"),
-            ("09/01 sex", "Muralha Ming (passe de 3 dias)", "Rishengchang e Templo Shuanglin", "Jantar em casa de família"),
-            ("10/01 sáb", "Manhã sem plano dentro do muro", "Trem para Xi'an", "—"),
-        ]),
-        ("🏛️ Xi'an", "3 noites · 10 a 13/01", [
-            ("10/01 sáb", "Chegada, Chá e muro ao entardecer", "Bairro Muçulmano: comida de rua", "Melhor comida de rua da viagem"),
-            ("11/01 dom", "Exército de Terracota (meio dia)", "Tarde livre no centro", "Reservar ingresso antes"),
-            ("12/01 seg", "Museu de Shaanxi (fecha segundas — checar)", "Muralha de bicicleta, 14 km", "Se o museu fechar, trocar por Grande Mesquita"),
-            ("13/01 ter", "Monte Hua (dia inteiro) ou manhã livre", "Trem para Chongqing (5h)", "Monte Hua só se não houver neve"),
-        ]),
-        ("🌉 Chongqing", "2 noites · 13 a 15/01", [
-            ("13/01 ter", "Chegada, check-in", "Hongya Cave à noite (acende ~19:00)", "Hotpot na origem"),
-            ("14/01 qua", "Museu dos Três Gargantas (reserva)", "Teleférico do Yangtzé + Estação Liziba", "Cidade vertical: escadarias"),
-            ("15/01 qui", "Ciqikou de manhã", "Trem para o bloco de natureza", "—"),
-        ]),
-    ]
+    # ---------- roteiro dia a dia (enriquecido) ----------
+    import conteudo
+    DIA, DIA_VARIANTES, DIA_FINAL = conteudo.dados_dia()
+    FRASES = conteudo.tradutor_dados()
 
-    DIA_VARIANTES = [
-        ("🌄 Opção A · Zhangjiajie", "3 noites · 15 a 18/01", [
-            ("15/01 qui", "Trem de Chongqing (4h30)", "Wulingyuan: reconhecimento, sem plano", "Dormir dentro do parque"),
-            ("16/01 sex", "Yuanjiajie e os pilares de Avatar", "Trilhas leves até o fim da tarde", "52% dos dias encobertos em janeiro"),
-            ("17/01 sáb", "Monte Tianmen ou Elevador Bailong", "Segundo setor do parque", "Dia reserva para o caso de neblina"),
-            ("18/01 dom", "Manhã livre", "Trem para Changsha", "—"),
-        ]),
-        ("🛶 Opção B · Guilin e Yangshuo", "3 noites · 17 a 20/01", [
-            ("17/01 dom", "Trem até Guilin, base em Yangshuo", "Vila à beira do rio, sem plano", "Clima mais ameno: 15 °C"),
-            ("18/01 seg", "Cruzeiro no Rio Li (4h)", "Bicicleta entre arrozais e karst", "O dia mais bonito da variante"),
-            ("19/01 ter", "Terraços de Longji (2h de carro)", "Tarde livre em Yangshuo", "Terraços secos em janeiro"),
-            ("20/01 qua", "Manhã livre", "Voo para Xangai", "Resolve o trecho longo"),
-        ]),
-        ("⛰️ Opção C · Huangshan", "1 noite · 23 a 24/01", [
-            ("23/01 sáb", "Trem de Hangzhou (1h30), teleférico", "Picos Yuping/Beihai, dormir no alto", "Gelo: crampon obrigatório"),
-            ("24/01 dom", "Nascer do sol no topo", "Descer a pé e seguir para Nanjing", "Uma noite cobre um setor"),
-        ]),
-    ]
-
-    DIA_FINAL = [
-        ("🌶️ Changsha", "2 noites · 18 a 20/01 (A) ou 15 a 17/01 (B/C)", [
-            ("dia 1", "Academia Yuelu (976 d.C.)", "Museu de Hunan: múmia de Lady Dai (reserva)", "Cozinha de Hunan, apimentada de verdade"),
-            ("dia 2", "Ilha Laranja", "Rua pedestre, comida de rua local", "Dia sem atração marcada"),
-        ]),
-        ("🏙️ Xangai", "3 noites · 20 a 23/01 (C: 17 a 22/01)", [
-            ("20/01 qua", "Chegada, O Bund ao entardecer", "Jantar na Concessão Francesa", "Bund melhor quando acendem as luzes"),
-            ("21/01 qui", "Museu de Xangai (reserva)", "Wukang Road e Tianzifang", "Ritmo de cidade grande"),
-            ("22/01 sex", "Suzhou (25 min de trem) ou dia livre", "Jardins UNESCO, canais", "Escolher 2 jardins, não 4"),
-            ("23/01 sáb", "Manhã livre, Jardim Yu", "Trem para Hangzhou (1h)", "—"),
-        ]),
-        ("🍵 Hangzhou", "1 noite · 23 a 24/01", [
-            ("23/01 sáb", "Chegada, Lago Oeste ao entardecer", "Bicicleta na margem do lago", "Lugar mais pintado da China"),
-            ("24/01 dom", "Templo Lingyin de manhã", "Chá Longjing em Meijiawu e trem para Nanjing", "Dia curto por definição"),
-        ]),
-        ("🕯️ Nanjing", "1 noite · 24 a 25/01", [
-            ("24/01 dom", "Chegada no fim da tarde", "Rio Qinhuai à noite", "Jantar sem plano"),
-            ("25/01 seg", "Memorial do Massacre de 1937 (2h30, reserva)", "Muralha Ming e trem para Pequim", "Austero: não é lugar de foto"),
-        ]),
-        ("✈️ Pequim · fechamento", "1 noite · 25 a 26/01", [
-            ("25/01 seg", "Chegada de trem no fim do dia", "Jantar leve perto do hotel", "Hotel com recepção 24h"),
-            ("26/01 ter", "Dia inteiro sem plano: compras, hutong, café", "Descanso à tarde", "Sair para o aeroporto à 00:45 do dia 27"),
-        ]),
-    ]
-
-    def bloco_dia(titulo, subt, dias):
+    def bloco_dia(b, idx):
         linhas = "".join(
             f"<tr><td><b>{d}</b></td><td>{m}</td><td>{t}</td><td class='fine'>{o}</td></tr>"
-            for d, m, t, o in dias)
-        return f"""  <h2>{titulo}<span class="sub">{subt}</span></h2>
-  <div class="tw"><table>
-    <thead><tr><th>Dia</th><th>Manhã</th><th>Tarde</th><th>Noite / observação</th></tr></thead>
-    <tbody>{linhas}</tbody>
-  </table></div>
+            for d, m, t, o in b["dias"])
+        dicas = "".join(f"<li>{x}</li>" for x in b["dicas"])
+        return f"""  <article class="daycard" id="dia-{idx}">
+    <header class="dh"><h3>{b['titulo']}</h3><span class="pill">{b['subt']}</span></header>
+    <img class="dphoto" src="{b64(b['img'], 640, 62)}" alt="{b['titulo']}">
+    <p class="dres">{b['resumo']}</p>
+    <div class="tw"><table>
+      <thead><tr><th>Dia</th><th>Manhã</th><th>Tarde</th><th>Noite / observação</th></tr></thead>
+      <tbody>{linhas}</tbody>
+    </table></div>
+    <h4>Dicas</h4>
+    <ul class="tight">{dicas}</ul>
+  </article>
 """
 
-    blocos_dia = "".join(bloco_dia(*b) for b in DIA)
-    blocos_dia += "  <h2>O bloco de natureza<span class=\"sub\">Escolha uma das três: a rotina de cada uma, dia a dia.</span></h2>\n"
-    blocos_dia += "".join(bloco_dia(*b) for b in DIA_VARIANTES)
-    blocos_dia += "  <h2>O fim da viagem<span class=\"sub\">Do delta do Yangtzé de volta a Pequim, para o voo das 02:45.</span></h2>\n"
-    blocos_dia += "".join(bloco_dia(*b) for b in DIA_FINAL)
+    blocos_dia = "".join(bloco_dia(b, i) for i, b in enumerate(DIA))
+    blocos_dia += '  <h2 class="sep">O bloco de natureza<span class="sub">Escolha uma das três: a rotina de cada uma, dia a dia.</span></h2>\n'
+    blocos_dia += "".join(bloco_dia(b, 100 + i) for i, b in enumerate(DIA_VARIANTES))
+    blocos_dia += '  <h2 class="sep">O fim da viagem<span class="sub">Do delta do Yangtzé de volta a Pequim, para o voo das 02:45.</span></h2>\n'
+    blocos_dia += "".join(bloco_dia(b, 200 + i) for i, b in enumerate(DIA_FINAL))
+
+    # ---------- tradutor ----------
+    cats = []
+    for c, pt, zh, py in FRASES:
+        if c not in cats:
+            cats.append(c)
+    linhas_frases = []
+    for c, pt, zh, py in FRASES:
+        busca = f"{pt} {zh} {py} {c}".lower().replace("'", "")
+        linhas_frases.append(
+            f'<tr class="frase" data-cat="{c}" data-busca="{busca}" '
+            f'data-zh="{zh}" data-py="{py}" data-pt="{pt}">'
+            f'<td>{pt}</td><td class="zh">{zh}</td><td class="py">{py}</td></tr>')
+    filtros = "".join(f'<a href="#" class="chipf" data-cat="{c}">{c}</a>' for c in cats)
+
+    # ---------- vídeos ----------
+    VIDEOS = []  # preencha com dicts: titulo, canal, url, duracao, insights[list]
+    if VIDEOS:
+        cards_video = "".join(
+            f"""<article class="vcard">
+      <h3>{v['titulo']}</h3>
+      <p class="fine">{v['canal']} · {v.get('duracao','')}</p>
+      <ul class="tight">{''.join(f'<li>{i}</li>' for i in v['insights'])}</ul>
+      <a class="btn ghost" href="{v['url']}" target="_blank" rel="noopener">Assistir</a>
+    </article>""" for v in VIDEOS)
+    else:
+        cards_video = """<div class="vazio">
+      <b>Ainda sem vídeos</b>
+      <p>Mande os links do YouTube que o Isaac separou: eu assisto, extraio os insights principais
+      e cada vídeo entra aqui como um cartão com resumo, duração e canal.</p>
+      <p class="fine">Formato sugerido: link + por que vale (ex.: logística de trem, hutong, comida de rua).</p>
+    </div>"""
 
     html = f"""<!DOCTYPE html>
 <html lang="pt-BR">
@@ -391,7 +437,7 @@ def main():
 <title>China em 30 dias · guia da viagem</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>{CSS}</style>
-</head>
+<style>{EXTRA_CSS}</style>\n</head>
 <body>
 
 <div class="hero">
@@ -413,6 +459,8 @@ def main():
       <a role="tab" href="#passeios" data-tab="passeios" aria-selected="false">Passeios</a>
       <a role="tab" href="#preparo" data-tab="preparo" aria-selected="false">Preparo</a>
       <a role="tab" href="#roteiro-dia" data-tab="roteiro-dia" aria-selected="false">Roteiro dia a dia</a>
+      <a role="tab" href="#tradutor" data-tab="tradutor" aria-selected="false">Tradutor</a>
+      <a role="tab" href="#videos" data-tab="videos" aria-selected="false">Vídeos</a>
     </nav>
   </div>
 </div>
@@ -587,6 +635,30 @@ def main():
   {blocos_dia}
 </section>
 
+<section role="tabpanel" id="tab-tradutor">
+  <h2>Tradutor<span class="sub">Frases de sobrevivência em chinês, com pinyin. Toque na frase para mostrar em tela cheia para a outra pessoa.</span></h2>
+  <div class="trad-top">
+    <input id="busca" type="search" placeholder="Buscar em português, 中文 ou pinyin…">
+    <a class="btn" href="https://translate.google.com/?sl=pt&tl=zh-CN&op=translate" target="_blank" rel="noopener">Google Tradutor (PT ↔ 中文)</a>
+  </div>
+  <div class="chipsf">{filtros}</div>
+  <div class="tw"><table class="trad">
+    <thead><tr><th>Português</th><th>中文</th><th>Pinyin</th></tr></thead>
+    <tbody>{"".join(linhas_frases)}</tbody>
+  </table></div>
+  <p class="fine">Funciona offline (é uma lista curada, não tradução automática). Para frases livres, use o Google Tradutor —
+  o texto digitado abaixo já vai preenchido ao clicar.</p>
+  <div class="livre">
+    <input id="livre" type="text" placeholder="Digite uma frase em português para traduzir">
+    <a href="#" class="btn" id="btn-livre">Traduzir no Google</a>
+  </div>
+</section>
+
+<section role="tabpanel" id="tab-videos">
+  <h2>Vídeos de referência<span class="sub">Links do YouTube com os insights que interessam para esta viagem.</span></h2>
+  <div class="grid">{cards_video}</div>
+</section>
+
 <footer>
   <div class="wrap" style="padding:0">
     Guia gerado para o grupo. Fotografias do Wikimedia Commons sob licenças livres. Mapa: OpenStreetMap.
@@ -633,7 +705,7 @@ document.querySelectorAll('nav.tabs a').forEach(btn => btn.addEventListener('cli
 }}));
 {JS}
 </script>
-</body>
+<script>{EXTRA_JS}</script>\n</body>
 </html>"""
 
     out = os.path.join(BASE, "index.html")
