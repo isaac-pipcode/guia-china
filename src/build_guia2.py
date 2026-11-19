@@ -341,7 +341,19 @@ def main():
 
   <h2>Cidades, uma por uma<span class="sub">Atrações, hospedagem, valor com rateio e programação sugerida.</span></h2>
   {"".join(blocos)}
-</section>
+</section>  <section role="tabpanel" id="roteiro-dia" class="">
+    <h2>Roteiro dia a dia<span class="sub">Com margem para se perder e aproveitar a cidade. Cada bloco tem o essencial e o que pode pular.</span></h2>
+    <div class="grid">
+      <div class="card"><b>🏯 Pequim (7 noites)</b><span>Cidade Proibida, Templo do Céu, Muralha, hutongs, momentos livres.</span></div>
+      <div class="card"><b>🗿 Datong (2 noites)</b><span>Grutas de Yungang, Templo Suspenso, margem livre.</span></div>
+      <div class="card"><b>🏮 Pingyao (2 noites)</b><span>Muralha Ming, Rishengchang, noite na cidade murada.</span></div>
+      <div class="card"><b>🏛️ Xi'an (3 noites)</b><span>Terracota, Muralha de bicicleta, Bairro Muçulmano.</span></div>
+      <div class="card"><b>🌉 Chongqing (2 noites)</b><span>Hongya Cave, Museu das Gargantes, Ciqikou.</span></div>
+      <div class="card"><b>🌶️ Changsha (2 noites)</b><span>Academia Yuelu, Museu de Hunan, Ilha Laranja.</span></div>
+      <div class="card"><b>🏙️ Xangai (3 noites)</b><span>O Bund, Concessão Francesa, Jardim Yu, momentos livres.</span></div>
+      <div class="card"><b>🍵 Hangzhou (1 noite)</b><span>Lago Oeste, Templo Lingyin, chá Longjing.</span></div>
+      <div class="card"><b>🕯️ Nanjing (1 noite)</b><span>Memorial 1937, Muralha Ming.</span></div>
+    </div>
 
 <section role="tabpanel" id="tab-aereo">
   <h2>Passagens aéreas<span class="sub">Air China · localizador 5HAJHF · emitido em 13/10/2026</span></h2>
