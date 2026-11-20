@@ -117,6 +117,18 @@ footer{margin-top:44px;padding:26px 0 40px;border-top:1px solid var(--line);font
 }
 </style>
 <style>
+/* ---------- mala ---------- */
+.gridmala{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;margin:8px 0 4px}
+.malacol{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:0 1px 2px rgba(15,23,42,.03)}
+.mhead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:6px}
+.mhead h3{margin:0;font-size:16.5px}
+.prog{font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap}
+.mgrupo h4{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:12px 0 3px}
+.item{display:flex;gap:9px;align-items:flex-start;padding:5px 0;font-size:14px;cursor:pointer;line-height:1.4}
+.item input{width:18px;height:18px;accent-color:#e2562b;margin:1px 0 0;flex:0 0 auto;cursor:pointer}
+.item input:checked + span{color:#9aa5b1;text-decoration:line-through}
+.malabar{display:flex;gap:14px;align-items:center;justify-content:space-between;margin:14px 0 6px;flex-wrap:wrap}
+
 /* ---------- clima ---------- */
 .clima{margin:10px 0 4px;padding:9px 12px;border-radius:10px;background:#f4f7fa;border:1px solid #e3eaf1;
   font-size:13px;color:#334155;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
@@ -260,6 +272,7 @@ table.trad tbody tr:hover td{background:#f4f8fb}
     <a role="tab" href="#trens" data-tab="trens" aria-selected="false">Trens<span>trechos internos</span></a>
     <a role="tab" href="#hoteis" data-tab="hoteis" aria-selected="false">Hospedagens<span>bairros e valores</span></a>
     <a role="tab" href="#passeios" data-tab="passeios" aria-selected="false">Passeios<span>ingressos e horários</span></a>
+    <a role="tab" href="#mala" data-tab="mala" aria-selected="false">Mala<span>o que levar</span></a>
     <a role="tab" href="#tradutor" data-tab="tradutor" aria-selected="false">Tradutor<span>frases em chinês</span></a>
     <a role="tab" href="#conversor" data-tab="conversor" aria-selected="false">Conversor<span>yuan ⇄ real</span></a>
     <a role="tab" href="#videos" data-tab="videos" aria-selected="false">Referências<span>artigos e vídeos</span></a>
@@ -1025,6 +1038,53 @@ table.trad tbody tr:hover td{background:#f4f8fb}
 
 </section>
 
+<section role="tabpanel" id="tab-mala">
+  <h2>Mala<span class="sub">Duas listas e uma comum. Marque o que já separou — fica salvo neste aparelho.</span></h2>
+  <p class="look">A premissa é o contraste: <b>−13 °C em Datong</b> e <b>+14 °C em Guilin</b>, com hotéis aquecidos a 20–24 °C.
+  Isso pede <b>camadas que se removem</b>, não uma peça grossa só. E como a volta permite <b>uma única peça de bagagem</b>,
+  a regra é 3 conjuntos de segunda pele e lavanderia de hotel.</p>
+
+  <div class="gridmala"><div class="malacol">
+      <div class="mhead"><h3>Masculino</h3><span class="prog" data-prog="m">0 de 21</span></div>
+      <div class="mgrupo"><h4>Camadas de baixo</h4><label class="item"><input type="checkbox" id="m-0-0"><span>3 camisetas segunda pele manga longa</span></label><label class="item"><input type="checkbox" id="m-0-1"><span>1 camiseta manga curta (dentro de hotel)</span></label><label class="item"><input type="checkbox" id="m-0-2"><span>3 cuecas boxer (merino ou sintético)</span></label><label class="item"><input type="checkbox" id="m-0-3"><span>2 meias finas</span></label><label class="item"><input type="checkbox" id="m-0-4"><span>2 meias de lã grossa</span></label></div><div class="mgrupo"><h4>Camada do meio</h4><label class="item"><input type="checkbox" id="m-1-0"><span>1 fleece ou pluma fina</span></label><label class="item"><input type="checkbox" id="m-1-1"><span>1 camisa social leve</span></label><label class="item"><input type="checkbox" id="m-1-2"><span>2 camisetas para jantar</span></label></div><div class="mgrupo"><h4>Casaco</h4><label class="item"><input type="checkbox" id="m-2-0"><span>1 parka de pluma com capuz e capa impermeável</span></label></div><div class="mgrupo"><h4>Pernas</h4><label class="item"><input type="checkbox" id="m-3-0"><span>1 calça softshell ou impermeável</span></label><label class="item"><input type="checkbox" id="m-3-1"><span>1 jeans escuro</span></label><label class="item"><input type="checkbox" id="m-3-2"><span>1 calça de moletom (voo e dormir)</span></label></div><div class="mgrupo"><h4>Extremidades</h4><label class="item"><input type="checkbox" id="m-4-0"><span>Luvas touchscreen</span></label><label class="item"><input type="checkbox" id="m-4-1"><span>1 par de luvas grossas</span></label><label class="item"><input type="checkbox" id="m-4-2"><span>Gorro de lã</span></label><label class="item"><input type="checkbox" id="m-4-3"><span>Buff / cachecol</span></label></div><div class="mgrupo"><h4>Pés</h4><label class="item"><input type="checkbox" id="m-5-0"><span>Bota impermeável de cano médio</span></label><label class="item"><input type="checkbox" id="m-5-1"><span>Tênis leve</span></label><label class="item"><input type="checkbox" id="m-5-2"><span>Chinelo</span></label></div><div class="mgrupo"><h4>Extra</h4><label class="item"><input type="checkbox" id="m-6-0"><span>Sunga (o Ascott tem piscina)</span></label><label class="item"><input type="checkbox" id="m-6-1"><span>Pijama leve</span></label></div>
+    </div><div class="malacol">
+      <div class="mhead"><h3>Feminino</h3><span class="prog" data-prog="f">0 de 23</span></div>
+      <div class="mgrupo"><h4>Camadas de baixo</h4><label class="item"><input type="checkbox" id="f-0-0"><span>2 segunda pele manga longa</span></label><label class="item"><input type="checkbox" id="f-0-1"><span>1 segunda pele manga curta</span></label><label class="item"><input type="checkbox" id="f-0-2"><span>3 leggings térmicas</span></label><label class="item"><input type="checkbox" id="f-0-3"><span>2 sutiãs esportivos + 1 normal</span></label><label class="item"><input type="checkbox" id="f-0-4"><span>2 meias finas</span></label><label class="item"><input type="checkbox" id="f-0-5"><span>2 meias de lã grossa</span></label><label class="item"><input type="checkbox" id="f-0-6"><span>1 meia-calça grossa</span></label></div><div class="mgrupo"><h4>Camada do meio</h4><label class="item"><input type="checkbox" id="f-1-0"><span>1 fleece fino</span></label><label class="item"><input type="checkbox" id="f-1-1"><span>2 blusas de lã fina</span></label><label class="item"><input type="checkbox" id="f-1-2"><span>1 vestido ou conjunto para jantar</span></label></div><div class="mgrupo"><h4>Casaco</h4><label class="item"><input type="checkbox" id="f-2-0"><span>1 parka de pluma longa com capuz</span></label></div><div class="mgrupo"><h4>Pernas</h4><label class="item"><input type="checkbox" id="f-3-0"><span>1 calça impermeável</span></label><label class="item"><input type="checkbox" id="f-3-1"><span>1 jeans</span></label><label class="item"><input type="checkbox" id="f-3-2"><span>1 calça de moletom</span></label></div><div class="mgrupo"><h4>Extremidades</h4><label class="item"><input type="checkbox" id="f-4-0"><span>Luvas</span></label><label class="item"><input type="checkbox" id="f-4-1"><span>Luvas internas finas</span></label><label class="item"><input type="checkbox" id="f-4-2"><span>Gorro</span></label><label class="item"><input type="checkbox" id="f-4-3"><span>Lenço grande que serve de xale</span></label></div><div class="mgrupo"><h4>Pés</h4><label class="item"><input type="checkbox" id="f-5-0"><span>Bota impermeável de cano médio</span></label><label class="item"><input type="checkbox" id="f-5-1"><span>Sapatilha ou tênis</span></label><label class="item"><input type="checkbox" id="f-5-2"><span>Chinelo</span></label></div><div class="mgrupo"><h4>Extra</h4><label class="item"><input type="checkbox" id="f-6-0"><span>Maiô (piscina do hotel)</span></label><label class="item"><input type="checkbox" id="f-6-1"><span>Nécessaire enxuto</span></label></div>
+    </div><div class="malacol">
+      <div class="mhead"><h3>Comum aos quatro</h3><span class="prog" data-prog="c">0 de 20</span></div>
+      <div class="mgrupo"><h4>Documentos</h4><label class="item"><input type="checkbox" id="c-0-0"><span>Passaporte + cópia digital</span></label><label class="item"><input type="checkbox" id="c-0-1"><span>Seguro viagem contratado</span></label><label class="item"><input type="checkbox" id="c-0-2"><span>Reservas salvas offline</span></label></div><div class="mgrupo"><h4>Saúde e pele</h4><label class="item"><input type="checkbox" id="c-1-0"><span>Remédios de uso próprio com receita</span></label><label class="item"><input type="checkbox" id="c-1-1"><span>Hidratante labial</span></label><label class="item"><input type="checkbox" id="c-1-2"><span>Hidratante corporal (ar seco do aquecimento)</span></label><label class="item"><input type="checkbox" id="c-1-3"><span>Protetor solar</span></label><label class="item"><input type="checkbox" id="c-1-4"><span>Analgésico</span></label></div><div class="mgrupo"><h4>Tecnologia</h4><label class="item"><input type="checkbox" id="c-2-0"><span>Adaptador tipo A/I</span></label><label class="item"><input type="checkbox" id="c-2-1"><span>Power bank</span></label><label class="item"><input type="checkbox" id="c-2-2"><span>Carregadores</span></label><label class="item"><input type="checkbox" id="c-2-3"><span>Fone</span></label></div><div class="mgrupo"><h4>Dia a dia</h4><label class="item"><input type="checkbox" id="c-3-0"><span>Saco de lavanderia</span></label><label class="item"><input type="checkbox" id="c-3-1"><span>Sabão de barra para lavar à mão</span></label><label class="item"><input type="checkbox" id="c-3-2"><span>Garrafa térmica pequena</span></label><label class="item"><input type="checkbox" id="c-3-3"><span>Máscara PFF2 (poluição em janeiro)</span></label></div><div class="mgrupo"><h4>Comprar na China</h4><label class="item"><input type="checkbox" id="c-4-0"><span>Segunda pele Heattech (Uniqlo)</span></label><label class="item"><input type="checkbox" id="c-4-1"><span>Pluma / parka</span></label><label class="item"><input type="checkbox" id="c-4-2"><span>Luvas, gorro e cachecol</span></label><label class="item"><input type="checkbox" id="c-4-3"><span>Crampon, se forem de Huangshan</span></label></div>
+    </div></div>
+
+  <div class="malabar">
+    <span id="mala-total" class="fine">0 de 0 itens</span>
+    <a href="#" class="chipf" id="mala-reset">Limpar marcações</a>
+  </div>
+
+  <h2>Comprar aqui ou na China?<span class="sub">Dividir é o caminho — e há um motivo forte para cada escolha.</span></h2>
+  <div class="tw"><table>
+    <thead><tr><th>Item</th><th>Onde comprar</th><th>Por quê</th></tr></thead>
+    <tbody><tr><td><b>Segunda pele (Heattech)</b></td><td>China · ¥99–149 na Uniqlo</td><td class='fine'>No Brasil em dezembro é fora de estação e custa R$ 150+</td></tr><tr><td><b>Pluma / parka</b></td><td>China · Bosideng ou Uniqlo</td><td class='fine'>Estoque de inverno pleno; aqui seria caro e escasso</td></tr><tr><td><b>Bota impermeável</b></td><td>Brasil</td><td class='fine'>Pé brasileiro é mais largo que a forma chinesa; numeração acima de 44 é rara lá</td></tr><tr><td><b>Luvas, gorro, cachecol</b></td><td>China · ¥20–60</td><td class='fine'>Você escolhe a espessura vendo</td></tr><tr><td><b>Crampon (microspike)</b></td><td>China · ¥30–50</td><td class='fine'>Só se Huangshan entrar no roteiro</td></tr><tr><td><b>Meias de lã</b></td><td>Brasil (Decathlon)</td><td class='fine'>As chinesas são finas demais</td></tr></tbody>
+  </table></div>
+
+  <h2>Os pés<span class="sub">Uma bota, um tênis leve, um chinelo. Nada além disso.</span></h2>
+  <p>O problema não é neve nas calçadas de Pequim — elas são limpas. É <b>gelo nas escadarias</b> da Muralha e de Huangshan,
+  <b>pedra polida</b> em Pingyao e chão molhado em Xangai. Tênis de São Paulo não resolve.</p>
+  <ul class="tight">
+    <li><b>Bota:</b> impermeável, cano médio, solado com cravos profundos, <b>meio número acima</b> para caber meia grossa</li>
+    <li><b>Modelo:</b> trilha leve serve melhor que bota de neve, que é dura demais para cidade</li>
+    <li><b>Tênis leve:</b> vocês passam 10 dias no sul ameno e dentro de hotéis aquecidos</li>
+    <li><b>Crampon:</b> só se Huangshan entrar no roteiro — compra-se na China por ¥30–50</li>
+  </ul>
+
+  <h2>Plano de compra<span class="sub">Para não desembarcar a −7 °C sem nada.</span></h2>
+  <ul class="tight">
+    <li><b>Antes de viajar (Brasil):</b> bota impermeável e meias de lã — o que precisa de numeração e prova</li>
+    <li><b>Chegar com:</b> uma segunda pele e um casaco razoável, para o trajeto do aeroporto até Dongzhimen</li>
+    <li><b>Primeiro ou segundo dia em Pequim:</b> uma hora de Uniqlo resolve segunda pele, pluma e acessórios dos quatro</li>
+    <li><b>Custo estimado do kit na China:</b> ¥800–1.500 por pessoa</li>
+  </ul>
+</section>
+
 <section role="tabpanel" id="tab-tradutor">
   <h2>Tradutor<span class="sub">Frases de sobrevivência em chinês, com pinyin. Toque na frase para mostrar em tela cheia para a outra pessoa.</span></h2>
   <div class="trad-top">
@@ -1187,6 +1247,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </script>
 <script>
+/* ---------- mala (checklist com memória) ---------- */
+(function(){
+  const KEY = 'mala_v1';
+  const boxes = Array.from(document.querySelectorAll('.malacol input[type=checkbox]'));
+  if (!boxes.length) return;
+  let salvo = {};
+  try { salvo = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e) {}
+  boxes.forEach(b => { if (salvo[b.id]) b.checked = true; });
+
+  function atualiza(){
+    const porCol = {};
+    boxes.forEach(b => {
+      const p = b.id.split('-')[0];
+      porCol[p] = porCol[p] || [0, 0];
+      porCol[p][1]++;
+      if (b.checked) porCol[p][0]++;
+    });
+    document.querySelectorAll('[data-prog]').forEach(el => {
+      const [n, t] = porCol[el.dataset.prog] || [0, 0];
+      el.textContent = n + ' de ' + t + (n === t && t > 0 ? ' ✓' : '');
+    });
+    const n = boxes.filter(b => b.checked).length;
+    const tot = document.getElementById('mala-total');
+    if (tot) tot.textContent = n + ' de ' + boxes.length + ' itens marcados';
+  }
+  boxes.forEach(b => b.addEventListener('change', () => {
+    salvo[b.id] = b.checked;
+    try { localStorage.setItem(KEY, JSON.stringify(salvo)); } catch(e) {}
+    atualiza();
+  }));
+  const rst = document.getElementById('mala-reset');
+  if (rst) rst.addEventListener('click', ev => {
+    ev.preventDefault();
+    boxes.forEach(b => { b.checked = false; });
+    salvo = {};
+    try { localStorage.removeItem(KEY); } catch(e) {}
+    atualiza();
+  });
+  atualiza();
+})();
+
 /* ---------- clima (Open-Meteo: atual + média histórica das datas) ---------- */
 (function(){
   const alvos = Array.from(document.querySelectorAll('.clima'));

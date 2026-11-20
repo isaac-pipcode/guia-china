@@ -14,6 +14,18 @@ IMG = os.path.join(BASE, "img")
 DATA = os.path.join(BASE, "data")
 
 EXTRA_CSS = """
+/* ---------- mala ---------- */
+.gridmala{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;margin:8px 0 4px}
+.malacol{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:0 1px 2px rgba(15,23,42,.03)}
+.mhead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:6px}
+.mhead h3{margin:0;font-size:16.5px}
+.prog{font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap}
+.mgrupo h4{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:12px 0 3px}
+.item{display:flex;gap:9px;align-items:flex-start;padding:5px 0;font-size:14px;cursor:pointer;line-height:1.4}
+.item input{width:18px;height:18px;accent-color:#e2562b;margin:1px 0 0;flex:0 0 auto;cursor:pointer}
+.item input:checked + span{color:#9aa5b1;text-decoration:line-through}
+.malabar{display:flex;gap:14px;align-items:center;justify-content:space-between;margin:14px 0 6px;flex-wrap:wrap}
+
 /* ---------- clima ---------- */
 .clima{margin:10px 0 4px;padding:9px 12px;border-radius:10px;background:#f4f7fa;border:1px solid #e3eaf1;
   font-size:13px;color:#334155;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
@@ -125,6 +137,47 @@ table.trad tbody tr:hover td{background:#f4f8fb}
 """
 
 EXTRA_JS = """
+/* ---------- mala (checklist com memória) ---------- */
+(function(){
+  const KEY = 'mala_v1';
+  const boxes = Array.from(document.querySelectorAll('.malacol input[type=checkbox]'));
+  if (!boxes.length) return;
+  let salvo = {};
+  try { salvo = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e) {}
+  boxes.forEach(b => { if (salvo[b.id]) b.checked = true; });
+
+  function atualiza(){
+    const porCol = {};
+    boxes.forEach(b => {
+      const p = b.id.split('-')[0];
+      porCol[p] = porCol[p] || [0, 0];
+      porCol[p][1]++;
+      if (b.checked) porCol[p][0]++;
+    });
+    document.querySelectorAll('[data-prog]').forEach(el => {
+      const [n, t] = porCol[el.dataset.prog] || [0, 0];
+      el.textContent = n + ' de ' + t + (n === t && t > 0 ? ' ✓' : '');
+    });
+    const n = boxes.filter(b => b.checked).length;
+    const tot = document.getElementById('mala-total');
+    if (tot) tot.textContent = n + ' de ' + boxes.length + ' itens marcados';
+  }
+  boxes.forEach(b => b.addEventListener('change', () => {
+    salvo[b.id] = b.checked;
+    try { localStorage.setItem(KEY, JSON.stringify(salvo)); } catch(e) {}
+    atualiza();
+  }));
+  const rst = document.getElementById('mala-reset');
+  if (rst) rst.addEventListener('click', ev => {
+    ev.preventDefault();
+    boxes.forEach(b => { b.checked = false; });
+    salvo = {};
+    try { localStorage.removeItem(KEY); } catch(e) {}
+    atualiza();
+  });
+  atualiza();
+})();
+
 /* ---------- clima (Open-Meteo: atual + média histórica das datas) ---------- */
 (function(){
   const alvos = Array.from(document.querySelectorAll('.clima'));
@@ -485,6 +538,49 @@ def clima_div(cid):
     lat, lon, d1, d2 = CLIMA[cid]
     return f'<div class="clima" data-clima="{lat},{lon},{d1},{d2}">carregando clima…</div>'
 
+
+MALA = {
+  "Masculino": [
+    ("Camadas de baixo", [("3 camisetas segunda pele manga longa",1),("1 camiseta manga curta (dentro de hotel)",1),
+                          ("3 cuecas boxer (merino ou sintético)",1),("2 meias finas",1),("2 meias de lã grossa",1)]),
+    ("Camada do meio", [("1 fleece ou pluma fina",1),("1 camisa social leve",1),("2 camisetas para jantar",1)]),
+    ("Casaco", [("1 parka de pluma com capuz e capa impermeável",1)]),
+    ("Pernas", [("1 calça softshell ou impermeável",1),("1 jeans escuro",1),("1 calça de moletom (voo e dormir)",1)]),
+    ("Extremidades", [("Luvas touchscreen",1),("1 par de luvas grossas",1),("Gorro de lã",1),("Buff / cachecol",1)]),
+    ("Pés", [("Bota impermeável de cano médio",1),("Tênis leve",1),("Chinelo",1)]),
+    ("Extra", [("Sunga (o Ascott tem piscina)",1),("Pijama leve",1)]),
+  ],
+  "Feminino": [
+    ("Camadas de baixo", [("2 segunda pele manga longa",1),("1 segunda pele manga curta",1),
+                          ("3 leggings térmicas",1),("2 sutiãs esportivos + 1 normal",1),
+                          ("2 meias finas",1),("2 meias de lã grossa",1),("1 meia-calça grossa",1)]),
+    ("Camada do meio", [("1 fleece fino",1),("2 blusas de lã fina",1),("1 vestido ou conjunto para jantar",1)]),
+    ("Casaco", [("1 parka de pluma longa com capuz",1)]),
+    ("Pernas", [("1 calça impermeável",1),("1 jeans",1),("1 calça de moletom",1)]),
+    ("Extremidades", [("Luvas",1),("Luvas internas finas",1),("Gorro",1),("Lenço grande que serve de xale",1)]),
+    ("Pés", [("Bota impermeável de cano médio",1),("Sapatilha ou tênis",1),("Chinelo",1)]),
+    ("Extra", [("Maiô (piscina do hotel)",1),("Nécessaire enxuto",1)]),
+  ],
+  "Comum aos quatro": [
+    ("Documentos", [("Passaporte + cópia digital",1),("Seguro viagem contratado",1),("Reservas salvas offline",1)]),
+    ("Saúde e pele", [("Remédios de uso próprio com receita",1),("Hidratante labial",1),
+                      ("Hidratante corporal (ar seco do aquecimento)",1),("Protetor solar",1),("Analgésico",1)]),
+    ("Tecnologia", [("Adaptador tipo A/I",1),("Power bank",1),("Carregadores",1),("Fone",1)]),
+    ("Dia a dia", [("Saco de lavanderia",1),("Sabão de barra para lavar à mão",1),
+                   ("Garrafa térmica pequena",1),("Máscara PFF2 (poluição em janeiro)",1)]),
+    ("Comprar na China", [("Segunda pele Heattech (Uniqlo)",1),("Pluma / parka",1),
+                          ("Luvas, gorro e cachecol",1),("Crampon, se forem de Huangshan",1)]),
+  ],
+}
+
+COMPRAS = [
+    ("Segunda pele (Heattech)", "China · ¥99–149 na Uniqlo", "No Brasil em dezembro é fora de estação e custa R$ 150+"),
+    ("Pluma / parka", "China · Bosideng ou Uniqlo", "Estoque de inverno pleno; aqui seria caro e escasso"),
+    ("Bota impermeável", "Brasil", "Pé brasileiro é mais largo que a forma chinesa; numeração acima de 44 é rara lá"),
+    ("Luvas, gorro, cachecol", "China · ¥20–60", "Você escolhe a espessura vendo"),
+    ("Crampon (microspike)", "China · ¥30–50", "Só se Huangshan entrar no roteiro"),
+    ("Meias de lã", "Brasil (Decathlon)", "As chinesas são finas demais"),
+]
 def b64(nome, largura=900, qualidade=70):
     im = Image.open(os.path.join(IMG, nome)).convert("RGB")
     if im.width > largura:
@@ -681,6 +777,28 @@ def money_input(id_, tab, mode="travelers", nights=None, rooms=None, placeholder
     return (f'<input class="money" id="in-{id_}" data-id="{id_}" data-tab="{tab}" data-mode="{mode}"{extra} '
             f'type="number" min="0" step="0.01" inputmode="decimal" placeholder="{placeholder}">')
 
+
+
+def html_mala():
+    out = []
+    for coluna, grupos in MALA.items():
+        total = sum(len(itens) for _, itens in grupos)
+        prefixo = {"Masculino": "m", "Feminino": "f"}.get(coluna, "c")
+        blocos = []
+        for gi, (grupo, itens) in enumerate(grupos):
+            lis = "".join(
+                f'<label class="item"><input type="checkbox" id="{prefixo}-{gi}-{ii}">'
+                f'<span>{texto}</span></label>' for ii, (texto, _) in enumerate(itens))
+            blocos.append(f'<div class="mgrupo"><h4>{grupo}</h4>{lis}</div>')
+        out.append(f"""<div class="malacol">
+      <div class="mhead"><h3>{coluna}</h3><span class="prog" data-prog="{prefixo}">0 de {total}</span></div>
+      {''.join(blocos)}
+    </div>""")
+    return "".join(out)
+
+def html_compras():
+    linhas = "".join(f"<tr><td><b>{a}</b></td><td>{b}</td><td class='fine'>{c}</td></tr>" for a, b, c in COMPRAS)
+    return linhas
 
 def main():
     imgs = {c["id"]: b64(c["img"]) for c in CIDADES}
@@ -935,6 +1053,7 @@ def main():
     <a role="tab" href="#trens" data-tab="trens" aria-selected="false">Trens<span>trechos internos</span></a>
     <a role="tab" href="#hoteis" data-tab="hoteis" aria-selected="false">Hospedagens<span>bairros e valores</span></a>
     <a role="tab" href="#passeios" data-tab="passeios" aria-selected="false">Passeios<span>ingressos e horários</span></a>
+    <a role="tab" href="#mala" data-tab="mala" aria-selected="false">Mala<span>o que levar</span></a>
     <a role="tab" href="#tradutor" data-tab="tradutor" aria-selected="false">Tradutor<span>frases em chinês</span></a>
     <a role="tab" href="#conversor" data-tab="conversor" aria-selected="false">Conversor<span>yuan ⇄ real</span></a>
     <a role="tab" href="#videos" data-tab="videos" aria-selected="false">Referências<span>artigos e vídeos</span></a>
@@ -1154,6 +1273,44 @@ def main():
 
   <h3 class="sanf">Cidade por cidade<span class="sub">Abra a cidade que quiser ver — cada uma tem foto, tabela de dias e dicas.</span></h3>
   {blocos_dia}
+</section>
+
+<section role="tabpanel" id="tab-mala">
+  <h2>Mala<span class="sub">Duas listas e uma comum. Marque o que já separou — fica salvo neste aparelho.</span></h2>
+  <p class="look">A premissa é o contraste: <b>−13 °C em Datong</b> e <b>+14 °C em Guilin</b>, com hotéis aquecidos a 20–24 °C.
+  Isso pede <b>camadas que se removem</b>, não uma peça grossa só. E como a volta permite <b>uma única peça de bagagem</b>,
+  a regra é 3 conjuntos de segunda pele e lavanderia de hotel.</p>
+
+  <div class="gridmala">{html_mala()}</div>
+
+  <div class="malabar">
+    <span id="mala-total" class="fine">0 de 0 itens</span>
+    <a href="#" class="chipf" id="mala-reset">Limpar marcações</a>
+  </div>
+
+  <h2>Comprar aqui ou na China?<span class="sub">Dividir é o caminho — e há um motivo forte para cada escolha.</span></h2>
+  <div class="tw"><table>
+    <thead><tr><th>Item</th><th>Onde comprar</th><th>Por quê</th></tr></thead>
+    <tbody>{html_compras()}</tbody>
+  </table></div>
+
+  <h2>Os pés<span class="sub">Uma bota, um tênis leve, um chinelo. Nada além disso.</span></h2>
+  <p>O problema não é neve nas calçadas de Pequim — elas são limpas. É <b>gelo nas escadarias</b> da Muralha e de Huangshan,
+  <b>pedra polida</b> em Pingyao e chão molhado em Xangai. Tênis de São Paulo não resolve.</p>
+  <ul class="tight">
+    <li><b>Bota:</b> impermeável, cano médio, solado com cravos profundos, <b>meio número acima</b> para caber meia grossa</li>
+    <li><b>Modelo:</b> trilha leve serve melhor que bota de neve, que é dura demais para cidade</li>
+    <li><b>Tênis leve:</b> vocês passam 10 dias no sul ameno e dentro de hotéis aquecidos</li>
+    <li><b>Crampon:</b> só se Huangshan entrar no roteiro — compra-se na China por ¥30–50</li>
+  </ul>
+
+  <h2>Plano de compra<span class="sub">Para não desembarcar a −7 °C sem nada.</span></h2>
+  <ul class="tight">
+    <li><b>Antes de viajar (Brasil):</b> bota impermeável e meias de lã — o que precisa de numeração e prova</li>
+    <li><b>Chegar com:</b> uma segunda pele e um casaco razoável, para o trajeto do aeroporto até Dongzhimen</li>
+    <li><b>Primeiro ou segundo dia em Pequim:</b> uma hora de Uniqlo resolve segunda pele, pluma e acessórios dos quatro</li>
+    <li><b>Custo estimado do kit na China:</b> ¥800–1.500 por pessoa</li>
+  </ul>
 </section>
 
 <section role="tabpanel" id="tab-tradutor">
