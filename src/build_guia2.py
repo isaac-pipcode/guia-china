@@ -1308,6 +1308,85 @@ def main():
     <a href="#" class="chipf" id="mala-reset">Limpar marcações</a>
   </div>
 
+  <h2>Glossário<span class="sub">Três palavras que decidem a compra — e não são sinônimos.</span></h2>
+  <div class="tw"><table>
+    <thead><tr><th>Termo</th><th>O que é</th><th>O que importa</th></tr></thead>
+    <tbody>
+      <tr><td><b>Pluma</b> (down)</td>
+          <td>O <b>recheio</b>: tufos de penugem de ganso ou pato que prendem ar entre as fibras</td>
+          <td>Mede-se em <b>fill power</b> (700, 800, 900): mais ar por grama = mais quente e mais leve.
+              <b>Perde quase toda a eficácia se molhar</b></td></tr>
+      <tr><td><b>Parka</b></td>
+          <td>O <b>formato</b>, não o material: casaco comprido (até a metade da coxa), com capuz,
+              vento bloqueado e bolsos</td>
+          <td>O comprimento protege coxa e lombar, que é o que congela primeiro com vento.
+              Pode ser de pluma, sintético ou lã</td></tr>
+      <tr><td><b>Doudoune</b></td>
+          <td>Jaqueta curta de pluma ou sintético, leve e compactável — franceses chamam assim
+              a “puffer” fina</td>
+          <td>É a peça perfeita de <b>camada do meio</b>: sozinha vai de 0 a −5 °C; sob um corta-vento
+              vai bem abaixo disso</td></tr>
+      <tr><td><b>Hardshell</b></td>
+          <td>Capa externa sem isolamento: só barra vento e água</td>
+          <td>É o que transforma uma doudoune em roupa de −13 °C. Precisa ser <b>folgada</b></td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>O sistema de camadas<span class="sub">Quatro camadas, que se combinam conforme a cidade — de +14 °C em Guilin a −13 °C em Datong.</span></h2>
+  <div class="tw"><table>
+    <thead><tr><th>#</th><th>Camada</th><th>Função</th><th>Como escolher</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><b>Segunda pele</b></td><td>Tirar o suor do corpo antes que esfrie</td>
+          <td><b>Poliéster ou lã merino. Nunca algodão</b> — algodão molhado vira gelo.
+              Ajustada ao corpo, manga longa</td></tr>
+      <tr><td>2</td><td><b>Fleece</b></td><td>Reter calor mesmo úmido</td>
+          <td>Polar de ~200 g/m², com zíper no peito para ventilar. Custa pouco e resolve muito</td></tr>
+      <tr><td>3</td><td><b>Doudoune / pluma fina</b></td><td>Isolar</td>
+          <td>Fill power 600–800. Tem que caber <b>sem comprimir</b> sob a camada 4</td></tr>
+      <tr><td>4</td><td><b>Parka ou hardshell</b></td><td>Cortar vento e neve</td>
+          <td>Capuz ajustável, punho elástico, zíper duplo. Comprida até a coxa</td></tr>
+    </tbody>
+  </table></div>
+  <p class="fine"><b>Combinações por cidade:</b> Guilin +14 °C → camada 1 + 2 · Xangai e Chongqing → 1 + 2 (3 só à noite) ·
+  Pequim, Xi'an, Pingyao → 1 + 2 + 3 · Datong e cume de Huangshan → 1 + 2 + 3 + 4, tudo junto.</p>
+
+  <div class="hint"><b>Sua doudoune da Decathlon entra como camada 3.</b> Sim — ela é exatamente a peça do meio.
+  Duas condições: (1) a camada 4 precisa ser <b>folgada</b> o suficiente para ela não ficar comprimida;
+  (2) pluma comprimida perde eficiência, então se você se abraçar e sentir aperto, o tamanho do casaco externo está errado.
+  Sozinha, a doudoune cobre 0 a −5 °C. Com fleece por baixo e corta-vento por cima, encara Datong.
+  Confira na etiqueta a <b>temperatura de conforto</b> que a Decathlon imprime — é o número que vale.</div>
+
+  <h2>Como escolher cada peça<span class="sub">O critério que decide, e o erro comum.</span></h2>
+  <div class="tw"><table>
+    <thead><tr><th>Peça</th><th>O que procurar</th><th>Erro comum</th></tr></thead>
+    <tbody>
+      <tr><td><b>Segunda pele</b></td>
+          <td>Poliéster (Heattech) ou merino; ajustada; manga longa e decote alto</td>
+          <td>Levar camiseta de algodão “porque é quentinha” — molhada, ela rouba calor</td></tr>
+      <tr><td><b>Fleece</b></td>
+          <td>Polar 200 g/m², com zíper no peito, gola alta</td>
+          <td>Comprar um gigante e não conseguir vestir nada por cima</td></tr>
+      <tr><td><b>Doudoune</b></td>
+          <td>Fill power 600+, compactável, com capuz se possível</td>
+          <td>Usar apertada sob o casaco: o aperto tira o ar, e o ar é o isolante</td></tr>
+      <tr><td><b>Parka</b></td>
+          <td>Comprida, capuz com ajuste, DWR na capa, zíper de dois sentidos, bolso interno</td>
+          <td>Comprar justa “para não parecer grande” — tem que caber as camadas 1 a 3</td></tr>
+      <tr><td><b>Bota</b></td>
+          <td>Impermeável, cano médio, solado com cravos, meio número acima</td>
+          <td>Bota de neve rígida para andar 10 km em cidade: calo garantido</td></tr>
+      <tr><td><b>Meias</b></td>
+          <td>Lã merino ou sintética; grossa para montanha, fina para cidade</td>
+          <td>Só meia grossa: com bota justa, ela comprime o pé e esfria o dedo</td></tr>
+      <tr><td><b>Luvas</b></td>
+          <td>Par interno fino (toque em tela) + par externo impermeável</td>
+          <td>Luva única e grossa: você tira para usar o celular e perde o calor</td></tr>
+      <tr><td><b>Gorro e cachecol</b></td>
+          <td>Gorro que cobre a orelha; lenço grande que vira xale</td>
+          <td>Esquecer o pescoço: é por ali que sai a maior parte do calor</td></tr>
+    </tbody>
+  </table></div>
+
   <h2>Comprar aqui ou na China?<span class="sub">Dividir é o caminho — e há um motivo forte para cada escolha.</span></h2>
   <div class="tw"><table>
     <thead><tr><th>Item</th><th>Onde comprar</th><th>Por quê</th><th>Link</th></tr></thead>
