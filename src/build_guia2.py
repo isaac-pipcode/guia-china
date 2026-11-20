@@ -14,6 +14,9 @@ IMG = os.path.join(BASE, "img")
 DATA = os.path.join(BASE, "data")
 
 EXTRA_CSS = """
+td.lk{white-space:normal}
+a.btn.mini{padding:6px 10px;font-size:12px;margin:2px 4px 2px 0;border-radius:8px}
+
 /* ---------- mala ---------- */
 .gridmala{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;margin:8px 0 4px}
 .malacol{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:0 1px 2px rgba(15,23,42,.03)}
@@ -574,12 +577,24 @@ MALA = {
 }
 
 COMPRAS = [
-    ("Segunda pele (Heattech)", "China · ¥99–149 na Uniqlo", "No Brasil em dezembro é fora de estação e custa R$ 150+"),
-    ("Pluma / parka", "China · Bosideng ou Uniqlo", "Estoque de inverno pleno; aqui seria caro e escasso"),
-    ("Bota impermeável", "Brasil", "Pé brasileiro é mais largo que a forma chinesa; numeração acima de 44 é rara lá"),
-    ("Luvas, gorro, cachecol", "China · ¥20–60", "Você escolhe a espessura vendo"),
-    ("Crampon (microspike)", "China · ¥30–50", "Só se Huangshan entrar no roteiro"),
-    ("Meias de lã", "Brasil (Decathlon)", "As chinesas são finas demais"),
+    ("Segunda pele (Heattech)", "China · ¥99–149 na Uniqlo",
+     "No Brasil em dezembro é fora de estação e custa R$ 150+",
+     [("Uniqlo China", "https://www.uniqlo.cn/")]),
+    ("Pluma / parka", "China · Bosideng ou Uniqlo",
+     "Estoque de inverno pleno; aqui seria caro e escasso",
+     [("Bosideng", "https://www.bosideng.com/"), ("Uniqlo China", "https://www.uniqlo.cn/")]),
+    ("Bota impermeável", "Brasil · Decathlon",
+     "Pé brasileiro é mais largo que a forma chinesa; numeração acima de 44 é rara lá",
+     [("Decathlon · botas", "https://www.decathlon.com.br/search?q=bota%20impermeavel")]),
+    ("Luvas, gorro, cachecol", "China · ¥20–60",
+     "Você escolhe a espessura vendo",
+     [("Taobao", "https://www.taobao.com/"), ("Uniqlo China", "https://www.uniqlo.cn/")]),
+    ("Crampon (microspike)", "China · ¥30–50",
+     "Só se Huangshan entrar no roteiro",
+     [("Taobao", "https://www.taobao.com/")]),
+    ("Meias de lã", "Brasil · Decathlon",
+     "As chinesas são finas demais",
+     [("Decathlon · meias de lã", "https://www.decathlon.com.br/search?q=meia%20la")]),
 ]
 def b64(nome, largura=900, qualidade=70):
     im = Image.open(os.path.join(IMG, nome)).convert("RGB")
@@ -797,8 +812,13 @@ def html_mala():
     return "".join(out)
 
 def html_compras():
-    linhas = "".join(f"<tr><td><b>{a}</b></td><td>{b}</td><td class='fine'>{c}</td></tr>" for a, b, c in COMPRAS)
-    return linhas
+    linhas = []
+    for item, onde, porque, links in COMPRAS:
+        ls = " ".join(f'<a class="btn ghost mini" href="{u}" target="_blank" rel="noopener">{t}</a>'
+                      for t, u in links)
+        linhas.append(f"<tr><td><b>{item}</b></td><td>{onde}</td>"
+                      f"<td class='fine'>{porque}</td><td class='lk'>{ls}</td></tr>")
+    return "".join(linhas)
 
 def main():
     imgs = {c["id"]: b64(c["img"]) for c in CIDADES}
@@ -1290,7 +1310,7 @@ def main():
 
   <h2>Comprar aqui ou na China?<span class="sub">Dividir é o caminho — e há um motivo forte para cada escolha.</span></h2>
   <div class="tw"><table>
-    <thead><tr><th>Item</th><th>Onde comprar</th><th>Por quê</th></tr></thead>
+    <thead><tr><th>Item</th><th>Onde comprar</th><th>Por quê</th><th>Link</th></tr></thead>
     <tbody>{html_compras()}</tbody>
   </table></div>
 
