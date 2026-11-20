@@ -9,7 +9,7 @@ def dados_dia():
                     "um de templos e hutong, e dois dias deliberadamente leves.",
              dicas=["Cidade Proibida só com reserva online e passaporte, 7 dias antes (25/12 para 02/01).",
                     "01/01 é feriado nacional: praça e Templo do Céu ficam cheios — chegue no amanhecer.",
-                    "Segundas-feiras fecham quase todos os museus; 04/01 é dia de parques e hutong.",
+                    "Segundas-feiras fecham quase todos os museus — e é o pior dia para a Muralha, porque todo mundo vai para lá; 04/01 fica para parques e hutong.",
                     "Metrô custa ¥3–7 e aceita Alipay no celular; evite táxi entre 17h e 19h."],
              dias=[("30/12 qua", "Chegada 18:45 em Pequim, imigração e Express do Aeroporto até Dongzhimen",
                     "Check-in e jantar na Gui Jie, a rua de restaurantes que funciona até de madrugada",
