@@ -186,15 +186,23 @@ h4.dest{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var
 .calfull{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin:16px 0 8px;box-shadow:0 1px 2px rgba(15,23,42,.03)}
 .calfull h3{margin:0 0 2px;font-size:16px}
 .scen{display:block;margin:10px 0 14px}
-.cal{margin-bottom:18px}
-.cal h4{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:6px 0 8px}
-.calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
-.calgrid .wd{font-size:10.5px;text-transform:uppercase;color:#9aa1ab;text-align:center;padding:2px 0;font-weight:700}
-.cday{aspect-ratio:1/1;border-radius:10px;background:#f4f6f8;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;color:#9aa1ab;cursor:default;position:relative;padding:3px;text-align:center;line-height:1.15}
-.cday.notrip{background:#fafbfc;color:#c7ced6}
-.cday.trip{color:#fff;cursor:pointer;font-weight:700}
-.cday.trip .cn{font-size:8.5px;font-weight:500;opacity:.92;margin-top:2px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cday.trip:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.calwrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px 26px;margin-bottom:6px}
+.cal{margin:0}
+.cal h4{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0 0 7px;font-weight:700}
+.calgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.calgrid .wd{font-size:9.5px;text-transform:uppercase;color:#9aa1ab;text-align:center;padding:1px 0;font-weight:700;letter-spacing:.03em}
+.cday{min-width:0;min-height:46px;border-radius:9px;background:#f3f5f8;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;font-size:11.5px;color:#8f99a5;padding:3px 2px;text-align:center;
+  line-height:1.05;overflow:hidden}
+.cday.blank{background:transparent;min-height:0;height:auto}
+.cday.notrip{background:#f7f8fa;color:#b6bfc9}
+.cday.trip{color:#fff;cursor:pointer;font-weight:700;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.cday.trip .cn-long{display:none}
+.cday.trip .cn-short{display:inline}
+.cday.trip .cn{font-size:8.5px;font-weight:500;opacity:.95;margin-top:2px;max-width:100%;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:.01em}
+.cday.trip:hover{filter:brightness(1.1)}
+.cday.today{outline:2px solid var(--accent);outline-offset:1px}
 .leg{display:block;font-size:12px;color:var(--muted)}
 .leg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin:0 5px 0 0;vertical-align:-1px}
 .leg span{display:inline-block;margin:0 12px 6px 0}
@@ -239,7 +247,18 @@ table.trad tbody tr:hover td{background:#f4f8fb}
 .vazio b{display:block;font-size:15px;margin-bottom:6px}
 .vcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px}
 .vcard h3{margin:0 0 2px;font-size:16px}
-@media(max-width:620px){.dphoto{height:170px}}
+@media(max-width:620px){
+  .dphoto{height:170px}
+  .cday{min-height:44px;font-size:11px;border-radius:8px}
+  .calgrid{gap:3px}
+  .cday.trip .cn{font-size:7.5px}
+}
+@media(min-width:700px){
+  .cday.trip .cn-long{display:inline}
+  .cday.trip .cn-short{display:none}
+  .cday.trip .cn{font-size:8px}
+  .cday{min-height:52px}
+}
 </style>
 </head>
 <body>
@@ -1152,6 +1171,69 @@ table.trad tbody tr:hover td{background:#f4f8fb}
     </tbody>
   </table></div>
 
+  <h2>A parka, em números<span class="sub">O que a peça precisa ter para encarar −13 °C em Datong e o vento da Muralha.</span></h2>
+  <div class="tw"><table>
+    <thead><tr><th>Item</th><th>Especificação</th><th>Por quê</th></tr></thead>
+    <tbody>
+      <tr><td><b>Isolamento</b></td><td>Pluma <b>600–700 fill</b>, 200–300 g de pluma (ou sintético equivalente: HEATSEEKER, PrimaLoft)</td>
+          <td>Abaixo de 550 fill a peça fica pesada para o calor que entrega</td></tr>
+      <tr><td><b>Capa</b></td><td>Membrana impermeável (DryVent, Gore-Tex) ou DWR forte, com <b>costuras seladas</b></td>
+          <td>Pluma molhada perde quase toda a eficácia</td></tr>
+      <tr><td><b>Comprimento</b></td><td>Até a <b>metade da coxa</b></td>
+          <td>Cobre coxa e lombar, o que congela primeiro com vento</td></tr>
+      <tr><td><b>Capuz</b></td><td>Fixo ou removível, ajustável em 3 pontos, com isolamento próprio</td>
+          <td>Capuz sem isolamento é enfeite</td></tr>
+      <tr><td><b>Zíper</b></td><td>Dois sentidos, com aba (storm flap) por dentro</td>
+          <td>Permite sentar e abrir por baixo sem expor o peito</td></tr>
+      <tr><td><b>Punhos e barra</b></td><td>Punho elástico interno + ajuste externo; barra com cordão</td>
+          <td>Vento entra por punho e barra, não pela capa</td></tr>
+      <tr><td><b>Ajuste</b></td><td><b>Folgada</b> sobre as camadas 1–3</td>
+          <td>Pluma comprimida não isola</td></tr>
+      <tr><td><b>Peso</b></td><td>1,0–1,5 kg</td>
+          <td>Abaixo disso é provável que falte isolamento</td></tr>
+    </tbody>
+  </table></div>
+  <p class="fine"><b>Como provar na loja:</b> vista segunda pele + fleece + doudoune, levante os braços e se abrace.
+  Se apertar nos ombros ou nas costas, suba um tamanho — o aperto é o que estraga o isolamento.</p>
+
+  <h2>Modelos no Brasil<span class="sub">The North Face Brasil, preços de 20/11/2026 (semana de Black Friday, com desconto aplicado).</span></h2>
+  <div class="tw"><table>
+    <thead><tr><th>Modelo</th><th>Isolamento e capa</th><th class="num">Preço</th><th>Para quem</th></tr></thead>
+    <tbody>
+      <tr><td><b>McMurdo</b> (masc.)<br><span class="fine">o mais longo da linha</span></td>
+          <td>Pluma <b>600 fill</b> reciclada, DryVent impermeável e corta-vento</td>
+          <td class="num"><b>R$ 4.199</b><br><span class="fine">de 4.590</span></td>
+          <td>Quem quer <b>uma peça só</b> resolvendo tudo, sem camadas</td></tr>
+      <tr><td><b>Mountain Range Down</b> (masc.)</td>
+          <td>Pluma + HEATSEEKER, capa impermeável com costuras seladas, capuz isolado</td>
+          <td class="num"><b>R$ 3.949</b><br><span class="fine">de 4.590</span></td>
+          <td>Sistema de camadas, com ajuste folgado</td></tr>
+      <tr><td><b>Arctic Summit</b> (fem.)</td>
+          <td>Pluma <b>600 fill</b> reciclada, DryVent, comprimento alongado,
+              capuz com pelo removível</td>
+          <td class="num"><b>R$ 3.399</b><br><span class="fine">de 3.990</span></td>
+          <td>É a que o texto descreve como “ajuste espaçoso para camadas”</td></tr>
+      <tr><td><b>Hydrenalite City Down</b> (fem.)</td>
+          <td>Pluma <b>700 fill</b>, tecido repelente à água, leve e compressível</td>
+          <td class="num"><b>R$ 2.799</b><br><span class="fine">de 3.490 · esgotada em 2 cores</span></td>
+          <td>Melhor fill power por real; menos comprida</td></tr>
+      <tr><td><b>Antora Rain</b> (fem.)</td>
+          <td>DryVent 2L <b>sem isolamento</b> — é capa pura</td>
+          <td class="num"><b>R$ 1.149</b><br><span class="fine">de 1.399</span></td>
+          <td><b>Quem já tem a doudoune:</b> esta é a camada 4 que falta</td></tr>
+    </tbody>
+  </table></div>
+  <p class="fine">Links: <a href="https://www.thenorthface.com.br/parka-masculina-mcmurdo-woodland-green-5gjf-bri/p" target="_blank" rel="noopener">McMurdo</a> ·
+  <a href="https://www.thenorthface.com.br/parka-masculina-mountain-range-down-tnf-black-88we-kx7/p" target="_blank" rel="noopener">Mountain Range Down</a> ·
+  <a href="https://www.thenorthface.com.br/parka-feminina-arctic-summit-navy-84j2-8k2/p" target="_blank" rel="noopener">Arctic Summit</a> ·
+  <a href="https://www.thenorthface.com.br/parka-feminina-hydrenalite-city-down-hooded-white-dune-8d3k-qli/p" target="_blank" rel="noopener">Hydrenalite</a> ·
+  <a href="https://www.thenorthface.com.br/parka-feminina-antora-rain-tnf-black-8bkc-jk3/p" target="_blank" rel="noopener">Antora Rain</a></p>
+  <div class="hint"><b>O que a busca mostrou:</b> a Decathlon Brasil está com catálogo de verão —
+  não há parka de expedição hoje, só jaquetas puffer de moda. Quem tem inverno de verdade no Brasil
+  é The North Face, Columbia e Trilhas &amp; Aventuras. Para o nosso caso, a <b>Antora Rain (R$ 1.149)</b>
+  combinada com a sua doudoune resolve mais barato que a McMurdo — e é mais versátil, porque no sul
+  vocês vão querer só a capa.</div>
+
   <h2>Comparar na Decathlon<span class="sub">Um link por peça, já na categoria certa — para comparar modelo e preço.</span></h2>
   <div class="tw"><table>
     <thead><tr><th>Peça</th><th>Link</th><th>O que comparar</th></tr></thead>
@@ -1570,10 +1652,10 @@ document.addEventListener('DOMContentLoaded', () => {
 /* ---------- calendário ---------- */
 (function(){
   const CID = {
-    pequim:['Pequim','#12263a'], datong:['Datong','#4b5d6e'], pingyao:['Pingyao','#b3402a'],
-    xian:["Xi'an",'#b5741f'], chongqing:['Chongqing','#0f766e'], changsha:['Changsha','#c2410c'],
-    zhangjiajie:['Zhangjiajie','#2f6b4f'], guilin:['Guilin','#1f6f8b'], xangai:['Xangai','#3730a3'],
-    hangzhou:['Hangzhou','#15803d'], huangshan:['Huangshan','#7a4b2a'], nanjing:['Nanjing','#6b21a8']
+    pequim:['Pequim','PEQ','#12263a'], datong:['Datong','DAT','#4b5d6e'], pingyao:['Pingyao','PIN','#b3402a'],
+    xian:["Xi'an",'XIA','#b5741f'], chongqing:['Chongqing','CQ','#0f766e'], changsha:['Changsha','CS','#c2410c'],
+    zhangjiajie:['Zhangjiajie','ZJJ','#2f6b4f'], guilin:['Guilin','GUI','#1f6f8b'], xangai:['Xangai','XAN','#3730a3'],
+    hangzhou:['Hangzhou','HZH','#15803d'], huangshan:['Huangshan','HS','#7a4b2a'], nanjing:['Nanjing','NJ','#6b21a8']
   };
   const CEN = {
     A:[[ '2026-12-30','2027-01-06','pequim'],['2027-01-06','2027-01-08','datong'],['2027-01-08','2027-01-10','pingyao'],
@@ -1599,26 +1681,28 @@ document.addEventListener('DOMContentLoaded', () => {
   function render(cen){
     const alvo = document.getElementById('cal');
     if (!alvo) return;
-    let html = '';
+    let html = '<div class="calwrap">';
     MESES.forEach(([ano, mes, nome]) => {
       const primeiro = new Date(Date.UTC(ano, mes, 1));
       const dias = new Date(Date.UTC(ano, mes + 1, 0)).getUTCDate();
       html += '<div class="cal"><h4>' + nome + '</h4><div class="calgrid">';
       html += WD.map(w => '<div class="wd">' + w + '</div>').join('');
-      for (let i = 0; i < primeiro.getUTCDay(); i++) html += '<div></div>';
+      for (let i = 0; i < primeiro.getUTCDay(); i++) html += '<div class="cday blank"></div>';
       for (let d = 1; d <= dias; d++) {
         const atual = iso(new Date(Date.UTC(ano, mes, d)));
         const cid = cidade(atual, cen);
         if (cid) {
-          const [nomeCid, cor] = CID[cid];
+          const [nomeCid, sigla, cor] = CID[cid];
           html += '<div class="cday trip" style="background:' + cor + '" data-cid="' + cid + '" title="' + nomeCid + '">'
-                + d + '<span class="cn">' + nomeCid + '</span></div>';
+                + d + '<span class="cn cn-long">' + nomeCid + '</span>'
+                + '<span class="cn cn-short">' + sigla + '</span></div>';
         } else {
           html += '<div class="cday notrip">' + d + '</div>';
         }
       }
       html += '</div></div>';
     });
+    html += '</div>';
     alvo.innerHTML = html;
     alvo.querySelectorAll('.cday.trip').forEach(el => el.addEventListener('click', () => {
       const d = document.getElementById('dia-' + indiceCidade(el.dataset.cid));
@@ -1629,7 +1713,7 @@ document.addEventListener('DOMContentLoaded', () => {
     CEN[cen].forEach(([, , cid]) => { if (!usadas.has(cid)) usadas.set(cid, CID[cid]); });
     const leg = document.getElementById('calleg');
     if (leg) leg.innerHTML = Array.from(usadas.entries())
-      .map(([cid, [nome, cor]]) => '<span><i style="background:' + cor + '"></i>' + nome + '</span>').join('');
+      .map(([cid, [nome, sigla, cor]]) => '<span><i style="background:' + cor + '"></i>' + nome + '</span>').join('');
   }
   const ORDEM = ['pequim','datong','pingyao','xian','chongqing','zhangjiajie','guilin','changsha','xangai','hangzhou','huangshan','nanjing','pequim'];
   function indiceCidade(cid){
