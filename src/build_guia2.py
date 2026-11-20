@@ -13,7 +13,15 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # raiz do re
 IMG = os.path.join(BASE, "img")
 DATA = os.path.join(BASE, "data")
 
-EXTRA_CSS = """.quick{margin-top:14px}
+EXTRA_CSS = """
+/* ---------- clima ---------- */
+.clima{margin:10px 0 4px;padding:9px 12px;border-radius:10px;background:#f4f7fa;border:1px solid #e3eaf1;
+  font-size:13px;color:#334155;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
+.clima b{font-weight:700;color:var(--ink)}
+.clima .ico{font-size:15px}
+.clima .src{font-size:11px;color:#94a3b8}
+.clima.erro{background:#fdf3f0;border-color:#f2d9d1;color:#9a3412}
+.quick{margin-top:14px}
 .quick .chipf{margin:0 6px 8px 0}
 .vazio-embed{background:#0f172a;display:flex;align-items:center;justify-content:center}
 .vexp{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px;opacity:.55}
@@ -117,6 +125,108 @@ table.trad tbody tr:hover td{background:#f4f8fb}
 """
 
 EXTRA_JS = """
+/* ---------- clima (Open-Meteo: atual + média histórica das datas) ---------- */
+(function(){
+  const alvos = Array.from(document.querySelectorAll('.clima'));
+  if (!alvos.length) return;
+  const cache = new Map();
+  const TTL = 3 * 60 * 60 * 1000; // 3h
+  const ICO = {0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',
+               61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'❄️',77:'❄️',80:'🌦️',81:'🌧️',
+               82:'⛈️',85:'🌨️',86:'🌨️',95:'⛈️',96:'⛈️',99:'⛈️'};
+
+  function dentroDoIntervalo(md, d1, d2){
+    return (d1 <= d2) ? (md >= d1 && md <= d2) : (md >= d1 || md <= d2);
+  }
+  function lerCache(chave){
+    try {
+      const bruto = localStorage.getItem('clima:' + chave);
+      if (!bruto) return null;
+      const o = JSON.parse(bruto);
+      if (Date.now() - o.ts > TTL) return null;
+      return o.dados;
+    } catch(e) { return null; }
+  }
+  function gravarCache(chave, dados){
+    try { localStorage.setItem('clima:' + chave, JSON.stringify({ts: Date.now(), dados})); } catch(e) {}
+  }
+
+  async function buscar(lat, lon, d1, d2){
+    const chave = lat + ',' + lon + ',' + d1 + ',' + d2;
+    if (cache.has(chave)) return cache.get(chave);
+    const salvo = lerCache(chave);
+    if (salvo) { cache.set(chave, salvo); return salvo; }
+
+    const p = (async () => {
+      const urlAtual = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon +
+                       '&current=temperature_2m,weather_code&timezone=auto';
+      const urlHist  = 'https://archive-api.open-meteo.com/v1/archive?latitude=' + lat + '&longitude=' + lon +
+                       '&start_date=2015-12-01&end_date=2025-01-31&daily=temperature_2m_max,temperature_2m_min&timezone=auto';
+      const [atual, hist] = await Promise.all([
+        fetch(urlAtual).then(r => r.json()).catch(() => null),
+        fetch(urlHist).then(r => r.json()).catch(() => null)
+      ]);
+      let max = null, min = null, dias = 0;
+      if (hist && hist.daily && hist.daily.time) {
+        const t = hist.daily.time, mx = hist.daily.temperature_2m_max, mn = hist.daily.temperature_2m_min;
+        let smx = 0, smn = 0, n = 0;
+        for (let i = 0; i < t.length; i++) {
+          const md = t[i].slice(5);
+          if (dentroDoIntervalo(md, d1, d2) && mx[i] !== null && mn[i] !== null) { smx += mx[i]; smn += mn[i]; n++; }
+        }
+        if (n) { max = smx / n; min = smn / n; dias = Math.round(n / 10); }
+      }
+      const dados = {
+        agora: (atual && atual.current) ? atual.current.temperature_2m : null,
+        code: (atual && atual.current) ? atual.current.weather_code : null,
+        max: max, min: min, dias: dias
+      };
+      gravarCache(chave, dados);
+      return dados;
+    })();
+    cache.set(chave, p);
+    return p;
+  }
+
+  function pintar(el, d){
+    const r = v => Math.round(v);
+    const partes = [];
+    if (d.agora !== null && d.agora !== undefined) {
+      partes.push('<span class="ico">' + (ICO[d.code] || '🌡️') + '</span><span>agora <b>' + r(d.agora) + ' °C</b></span>');
+    }
+    if (d.max !== null && d.min !== null) {
+      partes.push('<span>na viagem: <b>máx ' + r(d.max) + ' °C</b> / <b>mín ' + r(d.min) + ' °C</b></span>');
+      partes.push('<span class="src">média de 10 anos nas mesmas datas · Open-Meteo</span>');
+    } else if (d.agora === null) {
+      el.className = 'clima erro';
+      el.textContent = 'clima indisponível (sem conexão com o Open-Meteo)';
+      return;
+    }
+    el.innerHTML = partes.join('');
+  }
+
+  function carregar(el){
+    if (el.dataset.carregado) return;
+    el.dataset.carregado = '1';
+    const [lat, lon, d1, d2] = el.dataset.clima.split(',');
+    buscar(lat, lon, d1, d2).then(d => {
+      if (d && (d.agora !== null || d.max !== null)) pintar(el, d);
+      else { el.className = 'clima erro'; el.textContent = 'clima indisponível agora'; }
+    }).catch(() => {
+      el.className = 'clima erro'; el.textContent = 'clima indisponível agora';
+    });
+  }
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entradas => {
+      entradas.forEach(e => { if (e.isIntersecting) { carregar(e.target); io.unobserve(e.target); } });
+    }, {rootMargin: '250px'});
+    alvos.forEach(el => io.observe(el));
+  } else {
+    alvos.forEach(carregar);
+  }
+})();
+
 /* ---------- conversor de moeda ---------- */
 (function(){
   const el = id => document.getElementById(id);
@@ -336,6 +446,44 @@ DATA_IN, DATA_OUT = bg.DATA_IN, bg.DATA_OUT
 svg_schema = bg.svg_schema
 gmaps = bg.gmaps
 
+
+
+CLIMA = {
+    "pequim":     (39.9042, 116.4074, "12-30", "01-06"),
+    "datong":     (40.0900, 113.3000, "01-06", "01-08"),
+    "pingyao":    (37.2000, 112.1800, "01-08", "01-10"),
+    "xian":       (34.3416, 108.9398, "01-10", "01-13"),
+    "chongqing":  (29.5630, 106.5516, "01-13", "01-15"),
+    "changsha":   (28.2282, 112.9388, "01-18", "01-20"),
+    "xangai":     (31.2304, 121.4737, "01-20", "01-23"),
+    "hangzhou":   (30.2741, 120.1551, "01-23", "01-24"),
+    "nanjing":    (32.0603, 118.7969, "01-24", "01-25"),
+    "zhangjiajie":(29.1170, 110.4790, "01-15", "01-18"),
+    "guilin":     (25.2736, 110.2900, "01-17", "01-20"),
+    "huangshan":  (30.1340, 118.1610, "01-23", "01-24"),
+}
+
+def norm_id(titulo):
+    import unicodedata, re as _re
+    t = _re.sub(r"[^A-Za-zÀ-ÿ /]", "", titulo).split("/")[0].strip().lower()
+    t = unicodedata.normalize("NFKD", t).encode("ascii", "ignore").decode()
+    t = t.replace(" ", "").replace("'", "")
+    # variantes e fechamento
+    if "opcaoazhangjiajie" in t or "zhangjiajie" in t: return "zhangjiajie"
+    if "guilin" in t or "yangshuo" in t: return "guilin"
+    if "huangshan" in t: return "huangshan"
+    if t.startswith("pequim"): return "pequim"
+    mapa = {"pequim":"pequim","datong":"datong","pingyao":"pingyao","xian":"xian",
+            "chongqing":"chongqing","changsha":"changsha","xangai":"xangai",
+            "hangzhou":"hangzhou","nanjing":"nanjing","zhangjiajie":"zhangjiajie",
+            "guilin":"guilin","huangshan":"huangshan"}
+    return mapa.get(t, t)
+
+def clima_div(cid):
+    if cid not in CLIMA:
+        return ""
+    lat, lon, d1, d2 = CLIMA[cid]
+    return f'<div class="clima" data-clima="{lat},{lon},{d1},{d2}">carregando clima…</div>'
 
 def b64(nome, largura=900, qualidade=70):
     im = Image.open(os.path.join(IMG, nome)).convert("RGB")
@@ -567,6 +715,7 @@ def main():
         <img class="photo" src="{imgs[cid]}" alt="{c['nome']}">
         <figcaption>{c['cap']} · Wikimedia Commons</figcaption>
       </figure>
+      {clima_div(cid)}
       <p style="margin-top:14px">{c['resumo']}</p>
 
       <h3>O que fazer</h3>
@@ -615,6 +764,7 @@ def main():
     <summary><span class="dt">{b['titulo']}</span><span class="pill">{b['subt']}</span><span class="chev">▶</span></summary>
     <div class="dbody">
     <img class="dphoto" src="{b64(b['img'], 640, 62)}" alt="{b['titulo']}">
+    {clima_div(norm_id(b['titulo']))}
     <p class="dres">{b['resumo']}</p>
     <div class="tw"><table>
       <thead><tr><th>Dia</th><th>Manhã</th><th>Tarde</th><th>Noite / observação</th></tr></thead>
