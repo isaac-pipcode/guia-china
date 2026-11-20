@@ -13,7 +13,9 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # raiz do re
 IMG = os.path.join(BASE, "img")
 DATA = os.path.join(BASE, "data")
 
-EXTRA_CSS = """.vazio-embed{background:#0f172a;display:flex;align-items:center;justify-content:center}
+EXTRA_CSS = """.quick{margin-top:14px}
+.quick .chipf{margin:0 6px 8px 0}
+.vazio-embed{background:#0f172a;display:flex;align-items:center;justify-content:center}
 .vexp{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px;opacity:.55}
 
 /* ---------- conversor ---------- */
@@ -127,6 +129,7 @@ EXTRA_JS = """
     brl.value = (parseFloat(cny.value || '0') * taxa).toFixed(2);
     rt.textContent = '1 ¥ = R$ ' + taxa.toFixed(4) + '   ·   R$ 1 = ' + (1/taxa).toFixed(2) + ' ¥';
     src.textContent = origem;
+    pintaRef();
   }
   async function atualizar(){
     src.textContent = 'buscando cotação…';
@@ -158,6 +161,19 @@ EXTRA_JS = """
     rt.textContent = '1 ¥ = R$ ' + taxa.toFixed(4) + '   ·   R$ 1 = ' + (1/taxa).toFixed(2) + ' ¥';
   });
   if (bt) bt.addEventListener('click', ev => { ev.preventDefault(); atualizar(); });
+
+  /* atalhos de valor e tabela de referência */
+  function pintaRef(){
+    const par = (a, b) => 'R$ ' + (a*taxa).toFixed(0) + ' – ' + (b*taxa).toFixed(0);
+    const m = (id, txt) => { const e = document.getElementById(id); if (e) e.textContent = txt; };
+    m('ref1', par(3, 7)); m('ref2', par(25, 50)); m('ref3', par(50, 150));
+    m('ref4', par(150, 450)); m('ref5', par(400, 800));
+  }
+  document.querySelectorAll('[data-cny]').forEach(ch => ch.addEventListener('click', ev => {
+    ev.preventDefault();
+    cny.value = ch.dataset.cny;
+    pintar();
+  }));
   pintar();
   atualizar();
 })();
@@ -721,6 +737,7 @@ def main():
     <a role="tab" href="#hoteis" data-tab="hoteis" aria-selected="false">Hospedagens<span>bairros e valores</span></a>
     <a role="tab" href="#passeios" data-tab="passeios" aria-selected="false">Passeios<span>ingressos e horários</span></a>
     <a role="tab" href="#tradutor" data-tab="tradutor" aria-selected="false">Tradutor<span>frases em chinês</span></a>
+    <a role="tab" href="#conversor" data-tab="conversor" aria-selected="false">Conversor<span>yuan ⇄ real</span></a>
     <a role="tab" href="#videos" data-tab="videos" aria-selected="false">Referências<span>artigos e vídeos</span></a>
     <a role="tab" href="#preparo" data-tab="preparo" aria-selected="false">Preparo<span>custos e checklist</span></a>
   </nav>
@@ -853,7 +870,7 @@ def main():
   <a class="btn ghost" href="https://www.trip.com/things-to-do/" target="_blank" rel="noopener">Trip.com · ingressos</a>
 </section>
 
-<section role="tabpanel" id="tab-preparo">
+<section role="tabpanel" id="tab-conversor">
   <h2>Conversor de moeda<span class="sub">Cotação do yuan buscada no navegador a cada visita. Sem internet, usa a referência de 05/10/2026.</span></h2>
   <div class="conv">
     <div class="convrow">
@@ -863,9 +880,30 @@ def main():
     </div>
     <p class="rate" id="rate">1 ¥ = R$ —</p>
     <p class="fine" id="rate-src">buscando cotação…</p>
-    <a href="#" class="chipf" id="rate-refresh">Atualizar cotação</a>
+    <div class="quick">
+      <a href="#" class="chipf" data-cny="10">¥10</a>
+      <a href="#" class="chipf" data-cny="50">¥50</a>
+      <a href="#" class="chipf" data-cny="100">¥100</a>
+      <a href="#" class="chipf" data-cny="500">¥500</a>
+      <a href="#" class="chipf" data-cny="1000">¥1.000</a>
+      <a href="#" class="chipf" id="rate-refresh">Atualizar cotação</a>
+    </div>
   </div>
+  <h3>Para ter na cabeça</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Item</th><th>Yuan</th><th>Real (na cotação atual)</th></tr></thead>
+    <tbody>
+      <tr><td>Metrô</td><td>¥3–7</td><td id="ref1">—</td></tr>
+      <tr><td>Refeição popular</td><td>¥25–50</td><td id="ref2">—</td></tr>
+      <tr><td>Ingresso de museu/templo</td><td>¥50–150</td><td id="ref3">—</td></tr>
+      <tr><td>Trem-bala (3–5 h)</td><td>¥150–450</td><td id="ref4">—</td></tr>
+      <tr><td>Hotel 4★ (quarto/noite)</td><td>¥400–800</td><td id="ref5">—</td></tr>
+    </tbody>
+  </table></div>
+  <p class="fine">A tabela recalcula junto com a cotação sempre que a página carrega.</p>
+</section>
 
+<section role="tabpanel" id="tab-preparo">
   <h2>Resumo de custos<span class="sub">Somatório do que foi preenchido nas outras abas.</span></h2>
   <div class="tw"><table>
     <thead><tr><th>Categoria</th><th class="num">Total</th></tr></thead>
