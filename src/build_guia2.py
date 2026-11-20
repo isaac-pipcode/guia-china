@@ -14,6 +14,58 @@ IMG = os.path.join(BASE, "img")
 DATA = os.path.join(BASE, "data")
 
 EXTRA_CSS = """
+/* ---------- topbar + drawer ---------- */
+.topbar{position:sticky;top:0;z-index:900;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line)}
+.tbinner{display:flex;align-items:center;justify-content:space-between;height:58px}
+.brand{font-weight:800;letter-spacing:-.01em;color:var(--ink);text-decoration:none;font-size:15px;white-space:nowrap}
+.burger{width:44px;height:40px;border:0;background:transparent;cursor:pointer;display:flex;flex-direction:column;justify-content:center;gap:5px;align-items:flex-end;padding:0}
+.burger span{display:block;height:2px;width:22px;background:var(--ink);border-radius:2px;transition:.2s}
+.burger span:nth-child(2){width:16px}
+.burger span:nth-child(3){width:20px}
+.burger:hover span{width:22px}
+.scrim{position:fixed;inset:0;background:rgba(8,15,26,.45);opacity:0;pointer-events:none;transition:.22s;z-index:940}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(340px,86vw);background:#fff;z-index:950;
+  transform:translateX(105%);transition:transform .26s cubic-bezier(.3,.8,.3,1);box-shadow:-12px 0 40px rgba(8,15,26,.18);
+  display:flex;flex-direction:column;padding:18px 0 24px}
+.drawer.on{transform:translateX(0)}
+.dhead{display:flex;align-items:center;justify-content:space-between;padding:0 20px 12px;border-bottom:1px solid var(--line);
+  font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.dclose{border:0;background:transparent;font-size:26px;line-height:1;color:var(--muted);cursor:pointer}
+.drawer nav{display:block;padding:10px 0;overflow-y:auto}
+.drawer nav a{display:block;padding:11px 20px;text-decoration:none;color:var(--ink-2);font-weight:600;font-size:15px;border-left:3px solid transparent}
+.drawer nav a span{display:block;font-weight:400;font-size:12px;color:var(--muted);margin-top:2px}
+.drawer nav a:hover{background:#f6f8fa}
+.drawer nav a[aria-selected="true"]{border-left-color:var(--accent);background:#fbfcfd}
+.drawer nav a[aria-selected="true"] span{color:var(--accent)}
+
+/* ---------- calendário ---------- */
+.calfull{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin:16px 0 8px;box-shadow:0 1px 2px rgba(15,23,42,.03)}
+.calfull h3{margin:0 0 2px;font-size:16px}
+.scen{display:block;margin:10px 0 14px}
+.cal{margin-bottom:18px}
+.cal h4{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:6px 0 8px}
+.calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.calgrid .wd{font-size:10.5px;text-transform:uppercase;color:#9aa1ab;text-align:center;padding:2px 0;font-weight:700}
+.cday{aspect-ratio:1/1;border-radius:10px;background:#f4f6f8;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;color:#9aa1ab;cursor:default;position:relative;padding:3px;text-align:center;line-height:1.15}
+.cday.notrip{background:#fafbfc;color:#c7ced6}
+.cday.trip{color:#fff;cursor:pointer;font-weight:700}
+.cday.trip .cn{font-size:8.5px;font-weight:500;opacity:.92;margin-top:2px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cday.trip:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.leg{display:block;font-size:12px;color:var(--muted)}
+.leg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin:0 5px 0 0;vertical-align:-1px}
+.leg span{display:inline-block;margin:0 12px 6px 0}
+.sanf{margin-top:30px}
+
+/* ---------- sanfona do dia a dia ---------- */
+details.daycard{background:#fff;border:1px solid var(--line);border-radius:18px;margin:12px 0;overflow:hidden;box-shadow:0 1px 2px rgba(15,23,42,.03)}
+details.daycard>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:16px 18px;font-weight:700;font-size:16px}
+details.daycard>summary::-webkit-details-marker{display:none}
+details.daycard>summary:hover{background:#fcfcfd}
+details.daycard>summary .dt{flex:1 1 auto}
+details.daycard[open]>summary{border-bottom:1px solid var(--line)}
+.dbody{padding:16px 18px}
+
 .daycard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0;box-shadow:0 1px 2px rgba(15,23,42,.03)}
 .daycard .dh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:10px}
 .daycard .dh h3{margin:0;font-size:18px}
@@ -48,6 +100,109 @@ table.trad tbody tr:hover td{background:#f4f8fb}
 """
 
 EXTRA_JS = """
+/* ---------- menu hambúrguer ---------- */
+(function(){
+  const burger = document.getElementById('burger');
+  const drawer = document.getElementById('drawer');
+  const scrim  = document.getElementById('scrim');
+  const closeB = document.getElementById('dclose');
+  function abrir(){ drawer.classList.add('on'); scrim.classList.add('on'); burger.setAttribute('aria-expanded','true'); drawer.setAttribute('aria-hidden','false'); }
+  function fechar(){ drawer.classList.remove('on'); scrim.classList.remove('on'); burger.setAttribute('aria-expanded','false'); drawer.setAttribute('aria-hidden','true'); }
+  if (burger) burger.addEventListener('click', () => drawer.classList.contains('on') ? fechar() : abrir());
+  if (closeB) closeB.addEventListener('click', fechar);
+  if (scrim)  scrim.addEventListener('click', fechar);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') fechar(); });
+  document.querySelectorAll('.drawer nav a, .brand').forEach(a => a.addEventListener('click', fechar));
+})();
+
+/* ---------- calendário ---------- */
+(function(){
+  const CID = {
+    pequim:['Pequim','#12263a'], datong:['Datong','#4b5d6e'], pingyao:['Pingyao','#b3402a'],
+    xian:["Xi'an",'#b5741f'], chongqing:['Chongqing','#0f766e'], changsha:['Changsha','#c2410c'],
+    zhangjiajie:['Zhangjiajie','#2f6b4f'], guilin:['Guilin','#1f6f8b'], xangai:['Xangai','#3730a3'],
+    hangzhou:['Hangzhou','#15803d'], huangshan:['Huangshan','#7a4b2a'], nanjing:['Nanjing','#6b21a8']
+  };
+  const CEN = {
+    A:[[ '2026-12-30','2027-01-06','pequim'],['2027-01-06','2027-01-08','datong'],['2027-01-08','2027-01-10','pingyao'],
+       ['2027-01-10','2027-01-13','xian'],['2027-01-13','2027-01-15','chongqing'],['2027-01-15','2027-01-18','zhangjiajie'],
+       ['2027-01-18','2027-01-20','changsha'],['2027-01-20','2027-01-23','xangai'],['2027-01-23','2027-01-24','hangzhou'],
+       ['2027-01-24','2027-01-25','nanjing'],['2027-01-25','2027-01-26','pequim']],
+    B:[[ '2026-12-30','2027-01-06','pequim'],['2027-01-06','2027-01-08','datong'],['2027-01-08','2027-01-10','pingyao'],
+       ['2027-01-10','2027-01-13','xian'],['2027-01-13','2027-01-15','chongqing'],['2027-01-15','2027-01-17','changsha'],
+       ['2027-01-17','2027-01-20','guilin'],['2027-01-20','2027-01-23','xangai'],['2027-01-23','2027-01-24','hangzhou'],
+       ['2027-01-24','2027-01-25','nanjing'],['2027-01-25','2027-01-26','pequim']],
+    C:[[ '2026-12-30','2027-01-06','pequim'],['2027-01-06','2027-01-08','datong'],['2027-01-08','2027-01-10','pingyao'],
+       ['2027-01-10','2027-01-13','xian'],['2027-01-13','2027-01-15','chongqing'],['2027-01-15','2027-01-17','changsha'],
+       ['2027-01-17','2027-01-22','xangai'],['2027-01-22','2027-01-23','hangzhou'],['2027-01-23','2027-01-24','huangshan'],
+       ['2027-01-24','2027-01-25','nanjing'],['2027-01-25','2027-01-26','pequim']]
+  };
+  const MESES = [[2026,11,'Dezembro 2026'],[2027,0,'Janeiro 2027']];
+  const WD = ['D','S','T','Q','Q','S','S'];
+  const iso = d => d.toISOString().slice(0,10);
+  function cidade(isoStr, cen){
+    for (const [ini, fim, cid] of CEN[cen]) { if (isoStr >= ini && isoStr < fim) return cid; }
+    return null;
+  }
+  function render(cen){
+    const alvo = document.getElementById('cal');
+    if (!alvo) return;
+    let html = '';
+    MESES.forEach(([ano, mes, nome]) => {
+      const primeiro = new Date(Date.UTC(ano, mes, 1));
+      const dias = new Date(Date.UTC(ano, mes + 1, 0)).getUTCDate();
+      html += '<div class="cal"><h4>' + nome + '</h4><div class="calgrid">';
+      html += WD.map(w => '<div class="wd">' + w + '</div>').join('');
+      for (let i = 0; i < primeiro.getUTCDay(); i++) html += '<div></div>';
+      for (let d = 1; d <= dias; d++) {
+        const atual = iso(new Date(Date.UTC(ano, mes, d)));
+        const cid = cidade(atual, cen);
+        if (cid) {
+          const [nomeCid, cor] = CID[cid];
+          html += '<div class="cday trip" style="background:' + cor + '" data-cid="' + cid + '" title="' + nomeCid + '">'
+                + d + '<span class="cn">' + nomeCid + '</span></div>';
+        } else {
+          html += '<div class="cday notrip">' + d + '</div>';
+        }
+      }
+      html += '</div></div>';
+    });
+    alvo.innerHTML = html;
+    alvo.querySelectorAll('.cday.trip').forEach(el => el.addEventListener('click', () => {
+      const d = document.getElementById('dia-' + indiceCidade(el.dataset.cid));
+      if (d) { d.open = true; d.scrollIntoView({behavior:'smooth', block:'start'}); }
+    }));
+    // legenda
+    const usadas = new Map();
+    CEN[cen].forEach(([, , cid]) => { if (!usadas.has(cid)) usadas.set(cid, CID[cid]); });
+    const leg = document.getElementById('calleg');
+    if (leg) leg.innerHTML = Array.from(usadas.entries())
+      .map(([cid, [nome, cor]]) => '<span><i style="background:' + cor + '"></i>' + nome + '</span>').join('');
+  }
+  const ORDEM = ['pequim','datong','pingyao','xian','chongqing','zhangjiajie','guilin','changsha','xangai','hangzhou','huangshan','nanjing','pequim'];
+  function indiceCidade(cid){
+    // mapeia id da cidade para o índice do cartão (0..4 comuns, 100+ variantes, 200+ finais)
+    const comuns = ['pequim','datong','pingyao','xian','chongqing'];
+    if (comuns.indexOf(cid) >= 0) return comuns.indexOf(cid);
+    const varA = {zhangjiajie:100}, varB = {guilin:101}, varC = {huangshan:102};
+    if (cid === 'zhangjiajie') return 100;
+    if (cid === 'guilin') return 101;
+    if (cid === 'huangshan') return 102;
+    if (cid === 'changsha') return 200;
+    if (cid === 'xangai') return 201;
+    if (cid === 'hangzhou') return 202;
+    if (cid === 'nanjing') return 203;
+    return 0;
+  }
+  document.querySelectorAll('[data-scen]').forEach(b => b.addEventListener('click', ev => {
+    ev.preventDefault();
+    document.querySelectorAll('[data-scen]').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    render(b.dataset.scen);
+  }));
+  render('A');
+})();
+
 (function(){
   const overlay = document.createElement('div');
   overlay.id = 'overlay';
@@ -378,8 +533,9 @@ def main():
             f"<tr><td><b>{d}</b></td><td>{m}</td><td>{t}</td><td class='fine'>{o}</td></tr>"
             for d, m, t, o in b["dias"])
         dicas = "".join(f"<li>{x}</li>" for x in b["dicas"])
-        return f"""  <article class="daycard" id="dia-{idx}">
-    <header class="dh"><h3>{b['titulo']}</h3><span class="pill">{b['subt']}</span></header>
+        return f"""  <details class="daycard" id="dia-{idx}">
+    <summary><span class="dt">{b['titulo']}</span><span class="pill">{b['subt']}</span><span class="chev">▶</span></summary>
+    <div class="dbody">
     <img class="dphoto" src="{b64(b['img'], 640, 62)}" alt="{b['titulo']}">
     <p class="dres">{b['resumo']}</p>
     <div class="tw"><table>
@@ -388,7 +544,8 @@ def main():
     </table></div>
     <h4>Dicas</h4>
     <ul class="tight">{dicas}</ul>
-  </article>
+    </div>
+  </details>
 """
 
     blocos_dia = "".join(bloco_dia(b, i) for i, b in enumerate(DIA))
@@ -457,21 +614,33 @@ def main():
   <div class="credit">Badaling sob a neve · {credito['autor']} / Wikimedia ({credito['licenca']})</div>
 </div>
 
-<div class="navwrap">
-  <div class="wrap">
-    <nav class="tabs" role="tablist">
-      <a role="tab" href="#roteiro" data-tab="roteiro" aria-selected="true">Roteiro</a>
-      <a role="tab" href="#aereo" data-tab="aereo" aria-selected="false">Passagens aéreas</a>
-      <a role="tab" href="#trens" data-tab="trens" aria-selected="false">Trens</a>
-      <a role="tab" href="#hoteis" data-tab="hoteis" aria-selected="false">Hospedagens</a>
-      <a role="tab" href="#passeios" data-tab="passeios" aria-selected="false">Passeios</a>
-      <a role="tab" href="#preparo" data-tab="preparo" aria-selected="false">Preparo</a>
-      <a role="tab" href="#roteiro-dia" data-tab="roteiro-dia" aria-selected="false">Roteiro dia a dia</a>
-      <a role="tab" href="#tradutor" data-tab="tradutor" aria-selected="false">Tradutor</a>
-      <a role="tab" href="#videos" data-tab="videos" aria-selected="false">Referências</a>
-    </nav>
+<div class="topbar">
+  <div class="wrap tbinner">
+    <a class="brand" href="#" data-tab="roteiro">China em 30 dias</a>
+    <button class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="drawer">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="dhead">
+    <span>Seções</span>
+    <button class="dclose" id="dclose" aria-label="Fechar menu">&times;</button>
+  </div>
+  <nav role="tablist">
+    <a role="tab" href="#roteiro" data-tab="roteiro" aria-selected="true">Roteiro<span>mapa e cidades</span></a>
+    <a role="tab" href="#roteiro-dia" data-tab="roteiro-dia" aria-selected="false">Roteiro dia a dia<span>calendário e sanfona</span></a>
+    <a role="tab" href="#aereo" data-tab="aereo" aria-selected="false">Passagens aéreas<span>voos e bagagem</span></a>
+    <a role="tab" href="#trens" data-tab="trens" aria-selected="false">Trens<span>trechos internos</span></a>
+    <a role="tab" href="#hoteis" data-tab="hoteis" aria-selected="false">Hospedagens<span>bairros e valores</span></a>
+    <a role="tab" href="#passeios" data-tab="passeios" aria-selected="false">Passeios<span>ingressos e horários</span></a>
+    <a role="tab" href="#tradutor" data-tab="tradutor" aria-selected="false">Tradutor<span>frases em chinês</span></a>
+    <a role="tab" href="#videos" data-tab="videos" aria-selected="false">Referências<span>artigos e vídeos</span></a>
+    <a role="tab" href="#preparo" data-tab="preparo" aria-selected="false">Preparo<span>custos e checklist</span></a>
+  </nav>
+</aside>
 
 <div class="wrap">
 
@@ -640,6 +809,17 @@ def main():
 <section role="tabpanel" id="tab-roteiro-dia">
   <h2>Roteiro dia a dia<span class="sub">O plano hora a hora, com espaço deliberado para se perder. Cada linha tem uma tarde ou noite sem atração marcada.</span></h2>
   <p class="look">Este é o roteiro completo do circuito atual — 27 noites, entrada e saída por Pequim. Se o grupo decidir cortar cidades, os blocos de <b>Changsha</b>, <b>Hangzhou</b> e <b>Nanjing</b> são os primeiros candidatos, e a aba mostra exatamente o que se perde em cada um.</p>
+  <div class="calfull"><h3>Calendário<span class="sub">Escolha a variante: os dias mudam de cor conforme a cidade onde vocês dormem.</span></h3>
+    <div class="scen">
+      <a href="#" class="chipf on" data-scen="A">A · Zhangjiajie</a>
+      <a href="#" class="chipf" data-scen="B">B · Guilin</a>
+      <a href="#" class="chipf" data-scen="C">C · Huangshan</a>
+    </div>
+    <div id="cal"></div>
+    <div id="calleg" class="leg"></div>
+  </div>
+
+  <h3 class="sanf">Cidade por cidade<span class="sub">Abra a cidade que quiser ver — cada uma tem foto, tabela de dias e dicas.</span></h3>
   {blocos_dia}
 </section>
 
@@ -703,11 +883,11 @@ function abrirCidade(id) {{
   map.closePopup();
 }}
 function trocarAba(nome) {{
-  document.querySelectorAll('nav.tabs a').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === nome ? 'true' : 'false'));
+  document.querySelectorAll('[data-tab]').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === nome ? 'true' : 'false'));
   document.querySelectorAll('section[role=tabpanel]').forEach(s => s.classList.toggle('on', s.id === 'tab-' + nome));
   if (nome === 'roteiro') setTimeout(() => map.invalidateSize(), 60);
 }}
-document.querySelectorAll('nav.tabs a').forEach(btn => btn.addEventListener('click', () => {{
+document.querySelectorAll('[data-tab]').forEach(btn => btn.addEventListener('click', () => {{
   trocarAba(btn.dataset.tab);
   window.scrollTo({{top: 0, behavior:'smooth'}});
 }}));
