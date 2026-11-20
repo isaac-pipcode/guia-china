@@ -351,7 +351,7 @@ TRENS = [
     ("Datong → Pingyao", "08/01", "3h", "~24/12/2026"),
     ("Pingyao → Xi'an", "10/01", "3h", "~26/12/2026"),
     ("Xi'an → Chongqing", "13/01", "5h", "~29/12/2026"),
-    ("Chongqing → bloco de natureza", "15/01", "4h30", "~01/01/2027"),
+    ("Chongqing → bloco de natureza", "15/01", "~3h (linha nova)", "~01/01/2027"),
     ("Changsha → Xangai", "20/01", "4h30", "~05/01/2027"),
     ("Xangai → Hangzhou", "23/01", "1h", "~08/01/2027"),
     ("Nanjing → Pequim", "25/01", "3h30", "~10/01/2027"),
@@ -648,6 +648,23 @@ def main():
 
     # ---------- referências ----------
     REFS = [
+
+        dict(tipo="Vídeo", titulo="Zhangjiajie: como visitar as Montanhas de Avatar na China",
+             fonte="Rota do Deco · 20:05 · publicado em 29/09/2026",
+             data="assistido e resumido por nós",
+             url="https://www.youtube.com/watch?v=MO7G-Oky76w",
+             video_id="MO7G-Oky76w",
+             insights=[
+                 "<b>Zhangjiajie não é uma coisa só:</b> é o nome da cidade (com o aeroporto e a estação), e dentro dela ficam três atrações independentes, cada uma com ingresso próprio — o <b>Parque Nacional em Wulingyuan</b> (as montanhas de Avatar), o <b>Monte Tianmen</b> (a Porta do Céu) e o <b>Grand Canyon com a ponte de vidro</b>.",
+                 "<b>Como chegar:</b> a linha nova de <b>Chongqing leva ~2h30–3h</b> — e o vídeo é explícito: é a melhor porta de entrada. De Pequim ou Xangai são 7–10h de trem, o que não compensa. Isso confirma o nosso encaixe depois de Chongqing (corrigimos a duração no guia, que estava com 4h30).",
+                 "<b>Ingresso do parque vale 4 dias</b>, com entradas e saídas ilimitadas. É a maior vantagem de dormir na região: se um dia amanhecer encoberto, volta-se no seguinte.",
+                 "<b>Comprar antes no Trip.com</b>, cerca de 7 dias antes, e andar sempre com o passaporte — na China ele é o ingresso.",
+                 "<b>Clima:</b> chove em média <b>200 dias por ano</b>. O inverno é a estação mais seca (menos chuva, mais chance de visibilidade), com o risco oposto: neve pode fechar setores. O autor considera outono o melhor período e evita feriados chineses a qualquer custo.",
+                 "<b>Quanto tempo:</b> 1 dia inteiro para o parque é o mínimo (fora chegada e saída); 2 dias para uma visita completa; 3 a 4 para incluir Tianmen, ponte de vidro e Furong. Nossas 3 noites dão 2 dias cheios — dá para o parque e mais uma atração.",
+                 "<b>Onde dormir:</b> <b>Wulingyuan</b>, não a cidade — a 30–40 min do aeroporto, mas permite entrar no parque às 6h–8h. Didi entre as duas leva ~30–40 min.",
+                 "<b>Extras que o vídeo sugere:</b> <b>Furong</b> (a cidade na cachoeira, 30 min de trem, bom para um fim de tarde) e <b>Fenghuang</b> (40–50 min de trem); em Wulingyuan há o espetáculo <b>Charming Xiangxi</b>, de cultura Tujia e Miao, sem precisar de mandarim.",
+                 "<b>Atenção:</b> o teleférico do Monte Tianmen estava <b>em reforma em 2026</b>, sem prazo divulgado — se estiver fechado na nossa data, o plano B é o elevador de Bailong e o segundo setor do parque.",
+             ]),
         dict(tipo="Artigo", titulo="Onde ficar em Pequim: melhores bairros e hotéis",
              fonte="Mala de Aventuras (Nanda Hudson)", data="atualizado em 10/04/2025",
              url="https://www.maladeaventuras.com/onde-ficar-em-pequim/",
