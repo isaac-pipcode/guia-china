@@ -994,6 +994,20 @@ def main():
     # ---------- referências ----------
     REFS = [
 
+        dict(tipo="Artigo", titulo="Mairon pelo Mundo — diário de uma viagem com o mesmo trajeto",
+             fonte="Mairon Giovani · posts de 2025–2026",
+             data="lido e resumido por nós",
+             url="https://maironpelomundo.com/china/",
+             insights=[
+                 "<b>O trajeto dele é quase o nosso</b>: Pequim → Pingyao → Xi'an → Chengdu → Guilin/Yangshuo, com posts detalhados de cada cidade. Serve como leitura de aprofundamento para as paradas que coincidem.",
+                 "<b>Trens:</b> a China tem mais de <b>40 mil km</b> de malha de alta velocidade. A letra indica a categoria — <b>G é a mais rápida (350 km/h)</b>, D fica em 250 km/h. Sempre que houver escolha, pegar G.",
+                 "<b>Assentos são estreitos:</b> a segunda classe é 3+2 pensando no biotipo asiático. Ele recomenda considerar a <b>primeira classe (2+2)</b> quando a diferença de preço é pequena — na China ela não custa o que custa em avião.",
+                 "<b>Preço fixo, sem flutuação:</b> não existe tarifa promocional como em avião. O risco é esgotar e sobrar só primeira classe. A venda abre <b>14 dias antes</b> (nosso guia trabalha com ~15).",
+                 "<b>Referência de custo:</b> Pequim → Xi'an sai por cerca de <b>¥575</b> (~R$ 445 na cotação de out/2026) para 4h cobrindo 1.200 km. Ajuda a calibrar a linha de trens do orçamento.",
+                 "<b>A bordo:</b> não há vagão-restaurante, mas há quiosque e carrinho; café custa ~¥27 (preço europeu) e quase todo vagão tem dispensador de água quente — daí o hábito chinês do miojo instantâneo.",
+                 "<b>Tomadas</b> são tipo A (pinos chatos) ou C (redondos), às vezes híbridas, normalmente embaixo do assento. Adaptador é obrigatório.",
+                 "<b>Internet:</b> ele defende o <b>eSIM (Airalo, Holafly)</b> instalado antes de embarcar em vez de VPN comprada no Brasil — mesma conclusão do outro vídeo que resumimos.",
+             ]),
         dict(tipo="Vídeo", titulo="CHINA 2026: tudo o que você precisa saber antes de viajar",
              fonte="Invista pra Viagem (Jennifer & João) · 22:59 · publicado em 15/11/2025",
              data="assistido e resumido por nós",
