@@ -576,6 +576,32 @@ MALA = {
   ],
 }
 
+
+DECA = [
+    ("Segunda pele (parte de cima)", "/roupas/superiores/segunda-pele",
+     "Gramatura 150–200 g/m²; poliéster ou merino, nunca algodão"),
+    ("Segunda pele (parte de baixo)", "/roupas/inferiores/segunda-pele",
+     "Legging térmica fina, para usar sob a calça"),
+    ("Fleece / polar", "/roupas/superiores/agasalhos-e-fleeces",
+     "Perto de 200 g/m², com zíper no peito"),
+    ("Doudoune / jaqueta de pluma", "/roupas/superiores/jaquetas",
+     "Veja a temperatura de conforto na descrição do produto"),
+    ("Parka / capa corta-vento", "/roupas/superiores/capas-de-chuva",
+     "Impermeável, sem isolamento, folgada para caber as camadas"),
+    ("Calça impermeável / softshell", "/roupas/inferiores/calcas-e-leggings",
+     "Que não faça barulho de plástico e vista sobre a segunda pele"),
+    ("Bota impermeável", "/calcados/calcados/botas",
+     "Cano médio, solado com cravos, meio número acima"),
+    ("Meias", "/calcados/meias/meias",
+     "Lã merino ou sintética; uma grossa e uma fina"),
+    ("Luvas", "/acessorios/trajes/luvas",
+     "Par fino touchscreen + par impermeável"),
+    ("Gorro", "/acessorios/trajes/gorros",
+     "Que cubra a orelha"),
+    ("Cachecol", "/acessorios/trajes/cachecois",
+     "Grande o bastante para virar xale"),
+]
+
 COMPRAS = [
     ("Segunda pele (Heattech)", "China · ¥99–149 na Uniqlo",
      "No Brasil em dezembro é fora de estação e custa R$ 150+",
@@ -585,7 +611,7 @@ COMPRAS = [
      [("Bosideng", "https://www.bosideng.com/"), ("Uniqlo China", "https://www.uniqlo.cn/")]),
     ("Bota impermeável", "Brasil · Decathlon",
      "Pé brasileiro é mais largo que a forma chinesa; numeração acima de 44 é rara lá",
-     [("Decathlon · botas", "https://www.decathlon.com.br/search?q=bota%20impermeavel")]),
+     [("Decathlon · botas", "https://www.decathlon.com.br/calcados/calcados/botas")]),
     ("Luvas, gorro, cachecol", "China · ¥20–60",
      "Você escolhe a espessura vendo",
      [("Taobao", "https://www.taobao.com/"), ("Uniqlo China", "https://www.uniqlo.cn/")]),
@@ -594,7 +620,7 @@ COMPRAS = [
      [("Taobao", "https://www.taobao.com/")]),
     ("Meias de lã", "Brasil · Decathlon",
      "As chinesas são finas demais",
-     [("Decathlon · meias de lã", "https://www.decathlon.com.br/search?q=meia%20la")]),
+     [("Decathlon · meias", "https://www.decathlon.com.br/calcados/meias/meias")]),
 ]
 def b64(nome, largura=900, qualidade=70):
     im = Image.open(os.path.join(IMG, nome)).convert("RGB")
@@ -810,6 +836,16 @@ def html_mala():
       {''.join(blocos)}
     </div>""")
     return "".join(out)
+
+
+def html_deca():
+    linhas = []
+    for peca, path, olhar in DECA:
+        url = "https://www.decathlon.com.br" + path
+        linhas.append(f"<tr><td><b>{peca}</b></td>"
+                      f"<td class='lk'><a class='btn ghost mini' href='{url}' target='_blank' rel='noopener'>Decathlon</a></td>"
+                      f"<td class='fine'>{olhar}</td></tr>")
+    return "".join(linhas)
 
 def html_compras():
     linhas = []
@@ -1396,6 +1432,15 @@ def main():
           <td>Esquecer o pescoço: é por ali que sai a maior parte do calor</td></tr>
     </tbody>
   </table></div>
+
+  <h2>Comparar na Decathlon<span class="sub">Um link por peça, já na categoria certa — para comparar modelo e preço.</span></h2>
+  <div class="tw"><table>
+    <thead><tr><th>Peça</th><th>Link</th><th>O que comparar</th></tr></thead>
+    <tbody>{html_deca()}</tbody>
+  </table></div>
+  <p class="fine">Atenção ao calendário: em dezembro o Brasil está no verão e muitas dessas categorias ficam
+  com estoque sazonal reduzido. Serve para comparar modelo e referência de preço — a compra de inverno pesado
+  continua melhor na China.</p>
 
   <h2>Comprar aqui ou na China?<span class="sub">Dividir é o caminho — e há um motivo forte para cada escolha.</span></h2>
   <div class="tw"><table>
