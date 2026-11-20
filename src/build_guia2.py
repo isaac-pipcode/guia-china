@@ -1326,6 +1326,11 @@ def main():
               a “puffer” fina</td>
           <td>É a peça perfeita de <b>camada do meio</b>: sozinha vai de 0 a −5 °C; sob um corta-vento
               vai bem abaixo disso</td></tr>
+      <tr><td><b>Fleece</b> (polar)</td>
+          <td>Malha sintética de poliéster com a superfície escovada, que prende ar entre as fibras —
+              o substituto moderno da lã</td>
+          <td>Aquece <b>mesmo molhado</b> e seca rápido, ao contrário do algodão e da pluma.
+              Mas <b>não corta vento nenhum</b>: sozinho, é só uma camada do meio</td></tr>
       <tr><td><b>Hardshell</b></td>
           <td>Capa externa sem isolamento: só barra vento e água</td>
           <td>É o que transforma uma doudoune em roupa de −13 °C. Precisa ser <b>folgada</b></td></tr>
@@ -1349,6 +1354,11 @@ def main():
   </table></div>
   <p class="fine"><b>Combinações por cidade:</b> Guilin +14 °C → camada 1 + 2 · Xangai e Chongqing → 1 + 2 (3 só à noite) ·
   Pequim, Xi'an, Pingyao → 1 + 2 + 3 · Datong e cume de Huangshan → 1 + 2 + 3 + 4, tudo junto.</p>
+
+  <div class="hint" style="background:#f4f7fa;border-left-color:#1f6f8b"><b>Fleece não corta vento.</b>
+  É a peça mais barata e mais versátil do conjunto (¥150–250 na Uniqlo, R$ 150–250 na Decathlon),
+  mas sozinho ele só funciona parado e sem vento. Com vento de Pequim, ele precisa de uma capa por cima —
+  é literalmente um cobertor de poliéster com zíper.</div>
 
   <div class="hint"><b>Sua doudoune da Decathlon entra como camada 3.</b> Sim — ela é exatamente a peça do meio.
   Duas condições: (1) a camada 4 precisa ser <b>folgada</b> o suficiente para ela não ficar comprimida;
