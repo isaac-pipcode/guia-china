@@ -13,7 +13,22 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # raiz do re
 IMG = os.path.join(BASE, "img")
 DATA = os.path.join(BASE, "data")
 
-EXTRA_CSS = """
+EXTRA_CSS = """.vazio-embed{background:#0f172a;display:flex;align-items:center;justify-content:center}
+.vexp{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px;opacity:.55}
+
+/* ---------- conversor ---------- */
+.conv{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;max-width:520px;box-shadow:0 1px 2px rgba(15,23,42,.03)}
+.convrow{display:block}
+.convrow label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;margin-bottom:10px}
+.convrow input{display:block;width:100%;margin-top:5px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:18px;font-weight:600;background:#fff}
+.convrow input:focus{outline:2px solid #cfe0ee;border-color:#9fc3e0}
+.convrow .arrow{display:block;text-align:center;color:#9aa1ab;font-size:18px;margin:6px 0}
+.rate{font-size:15px;font-weight:700;margin:12px 0 2px}
+/* ---------- vídeos ---------- */
+.vembed{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin-bottom:14px;background:#000}
+.vembed iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+h4.dest{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:10px 0 2px}
+
 /* ---------- topbar + drawer ---------- */
 .topbar{position:sticky;top:0;z-index:900;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line)}
 .tbinner{display:flex;align-items:center;justify-content:space-between;height:58px}
@@ -100,6 +115,53 @@ table.trad tbody tr:hover td{background:#f4f8fb}
 """
 
 EXTRA_JS = """
+/* ---------- conversor de moeda ---------- */
+(function(){
+  const el = id => document.getElementById(id);
+  const cny = el('cny'), brl = el('brl'), rt = el('rate'), src = el('rate-src'), bt = el('rate-refresh');
+  if (!cny || !brl) return;
+  let taxa = 0.776;
+  let origem = 'referência fixa de 05/10/2026';
+
+  function pintar(){
+    brl.value = (parseFloat(cny.value || '0') * taxa).toFixed(2);
+    rt.textContent = '1 ¥ = R$ ' + taxa.toFixed(4) + '   ·   R$ 1 = ' + (1/taxa).toFixed(2) + ' ¥';
+    src.textContent = origem;
+  }
+  async function atualizar(){
+    src.textContent = 'buscando cotação…';
+    try {
+      const r = await fetch('https://open.er-api.com/v6/latest/CNY', {cache:'no-store'});
+      const j = await r.json();
+      if (j && j.rates && j.rates.BRL) {
+        taxa = j.rates.BRL;
+        origem = 'open.er-api.com · atualizado em ' + (j.time_last_update_utc || '').replace(' 00:00:01 +0000','');
+        pintar(); return;
+      }
+    } catch (e) {}
+    try {
+      const r2 = await fetch('https://api.frankfurter.app/latest?from=CNY&to=BRL', {cache:'no-store'});
+      const j2 = await r2.json();
+      if (j2 && j2.rates && j2.rates.BRL) {
+        taxa = j2.rates.BRL;
+        origem = 'frankfurter.app (BCE) · ' + j2.date;
+        pintar(); return;
+      }
+    } catch (e) {}
+    origem = 'referência fixa de 05/10/2026 (sem conexão com as APIs)';
+    pintar();
+  }
+  cny.addEventListener('input', pintar);
+  brl.addEventListener('input', () => {
+    const v = parseFloat(brl.value || '0');
+    cny.value = (v / taxa).toFixed(2);
+    rt.textContent = '1 ¥ = R$ ' + taxa.toFixed(4) + '   ·   R$ 1 = ' + (1/taxa).toFixed(2) + ' ¥';
+  });
+  if (bt) bt.addEventListener('click', ev => { ev.preventDefault(); atualizar(); });
+  pintar();
+  atualizar();
+})();
+
 /* ---------- menu hambúrguer ---------- */
 (function(){
   const burger = document.getElementById('burger');
@@ -583,16 +645,38 @@ def main():
     ]
 
     def card_ref(r):
-        ico = "📄" if r["tipo"] == "Artigo" else "▶️"
         itens = "".join(f"<li>{i}</li>" for i in r["insights"])
+        vid = r.get("video_id")
+        if vid:
+            topo = (f'<div class="vembed"><iframe src="https://www.youtube.com/embed/{vid}" '
+                    f'title="{r["titulo"]}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; '
+                    f'encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>')
+            ico = "▶️"
+        else:
+            topo = ""
+            ico = "📄"
         return f"""<article class="vcard">
+      {topo}
       <h3>{ico} {r['titulo']}</h3>
       <p class="fine">{r['fonte']} · {r['data']}</p>
+      <h4 class="dest">Destaques</h4>
       <ul class="tight">{itens}</ul>
       <a class="btn ghost" href="{r['url']}" target="_blank" rel="noopener">Abrir original</a>
     </article>"""
 
     cards_video = "".join(card_ref(r) for r in REFS)
+    cards_video += """
+    <article class="vcard">
+      <div class="vembed vazio-embed"><div class="vexp">▶️</div></div>
+      <h3>▶️ Vídeos do YouTube</h3>
+      <p class="fine">aguardando os links</p>
+      <h4 class="dest">Destaques</h4>
+      <ul class="tight">
+        <li>Mande a URL do vídeo. Eu assisto, extraio os pontos que interessam para esta viagem e publico aqui.</li>
+        <li>O vídeo entra <b>incorporado</b> (embed), com o resumo dos destaques logo abaixo — como no cartão ao lado.</li>
+        <li>Se preferir, mande só o título e o canal: eu localizo e confirmo antes de publicar.</li>
+      </ul>
+    </article>"""
 
     html = f"""<!DOCTYPE html>
 <html lang="pt-BR">
@@ -770,6 +854,18 @@ def main():
 </section>
 
 <section role="tabpanel" id="tab-preparo">
+  <h2>Conversor de moeda<span class="sub">Cotação do yuan buscada no navegador a cada visita. Sem internet, usa a referência de 05/10/2026.</span></h2>
+  <div class="conv">
+    <div class="convrow">
+      <label>Yuan (¥)<input id="cny" type="number" inputmode="decimal" step="0.01" value="100"></label>
+      <span class="arrow">⇄</span>
+      <label>Real (R$)<input id="brl" type="number" inputmode="decimal" step="0.01"></label>
+    </div>
+    <p class="rate" id="rate">1 ¥ = R$ —</p>
+    <p class="fine" id="rate-src">buscando cotação…</p>
+    <a href="#" class="chipf" id="rate-refresh">Atualizar cotação</a>
+  </div>
+
   <h2>Resumo de custos<span class="sub">Somatório do que foi preenchido nas outras abas.</span></h2>
   <div class="tw"><table>
     <thead><tr><th>Categoria</th><th class="num">Total</th></tr></thead>

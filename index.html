@@ -116,7 +116,22 @@ footer{margin-top:44px;padding:26px 0 40px;border-top:1px solid var(--line);font
   input.money{width:92px}
 }
 </style>
-<style>
+<style>.vazio-embed{background:#0f172a;display:flex;align-items:center;justify-content:center}
+.vexp{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px;opacity:.55}
+
+/* ---------- conversor ---------- */
+.conv{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;max-width:520px;box-shadow:0 1px 2px rgba(15,23,42,.03)}
+.convrow{display:block}
+.convrow label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;margin-bottom:10px}
+.convrow input{display:block;width:100%;margin-top:5px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:18px;font-weight:600;background:#fff}
+.convrow input:focus{outline:2px solid #cfe0ee;border-color:#9fc3e0}
+.convrow .arrow{display:block;text-align:center;color:#9aa1ab;font-size:18px;margin:6px 0}
+.rate{font-size:15px;font-weight:700;margin:12px 0 2px}
+/* ---------- vídeos ---------- */
+.vembed{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin-bottom:14px;background:#000}
+.vembed iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+h4.dest{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:10px 0 2px}
+
 /* ---------- topbar + drawer ---------- */
 .topbar{position:sticky;top:0;z-index:900;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line)}
 .tbinner{display:flex;align-items:center;justify-content:space-between;height:58px}
@@ -717,6 +732,18 @@ table.trad tbody tr:hover td{background:#f4f8fb}
 </section>
 
 <section role="tabpanel" id="tab-preparo">
+  <h2>Conversor de moeda<span class="sub">Cotação do yuan buscada no navegador a cada visita. Sem internet, usa a referência de 05/10/2026.</span></h2>
+  <div class="conv">
+    <div class="convrow">
+      <label>Yuan (¥)<input id="cny" type="number" inputmode="decimal" step="0.01" value="100"></label>
+      <span class="arrow">⇄</span>
+      <label>Real (R$)<input id="brl" type="number" inputmode="decimal" step="0.01"></label>
+    </div>
+    <p class="rate" id="rate">1 ¥ = R$ —</p>
+    <p class="fine" id="rate-src">buscando cotação…</p>
+    <a href="#" class="chipf" id="rate-refresh">Atualizar cotação</a>
+  </div>
+
   <h2>Resumo de custos<span class="sub">Somatório do que foi preenchido nas outras abas.</span></h2>
   <div class="tw"><table>
     <thead><tr><th>Categoria</th><th class="num">Total</th></tr></thead>
@@ -963,10 +990,23 @@ table.trad tbody tr:hover td{background:#f4f8fb}
 <section role="tabpanel" id="tab-videos">
   <h2>Referências<span class="sub">Artigos e vídeos que lemos, com os insights que interessam para esta viagem.</span></h2>
   <div class="grid"><article class="vcard">
+      
       <h3>📄 Onde ficar em Pequim: melhores bairros e hotéis</h3>
       <p class="fine">Mala de Aventuras (Nanda Hudson) · atualizado em 10/04/2025</p>
+      <h4 class="dest">Destaques</h4>
       <ul class="tight"><li>Escolhe quatro bases: <b>Wangfujing</b> (melhor para primeira viagem, dá para ir a pé às atrações; ponto fraco é o movimento 24h), <b>Sanlitun</b> (vida noturna em Chaoyang, muitos estrangeiros, hotéis para todos os bolsos), <b>Qianmen</b> (a mais barata, arquitetura tradicional, ao sul do centro) e <b>CBD</b> (luxo).</li><li>Critério de seleção: nota <b>≥ 8 no Booking</b> — em outra escala da que usamos aqui (Google, 0–5). O Holiday Inn Express Dongzhimen aparece com <b>8,9/10</b>, coerente com o 4,4/5 que levantamos.</li><li>Confirma dois dos nossos finalistas: <b>Holiday Inn Express Dongzhimen</b> e <b>Ascott Raffles City</b> — mas os classifica como “Sanlitun”, porque ficam na borda leste, não no centro histórico.</li><li>Não trata de <b>Gulou/Shichahai</b> nem de <b>Dongzhimen</b> como base própria: é exatamente o recorte que interessa a quem quer hutong e comida, e não vida noturna.</li><li>Para 4 pessoas: a lista de “conforto” de Wangfujing (Grand Hyatt, Hilton Wangfujing, Beijing Hotel NUO) é a que resolve dois quartos no mesmo prédio, a pé da Cidade Proibida.</li></ul>
       <a class="btn ghost" href="https://www.maladeaventuras.com/onde-ficar-em-pequim/" target="_blank" rel="noopener">Abrir original</a>
+    </article>
+    <article class="vcard">
+      <div class="vembed vazio-embed"><div class="vexp">▶️</div></div>
+      <h3>▶️ Vídeos do YouTube</h3>
+      <p class="fine">aguardando os links</p>
+      <h4 class="dest">Destaques</h4>
+      <ul class="tight">
+        <li>Mande a URL do vídeo. Eu assisto, extraio os pontos que interessam para esta viagem e publico aqui.</li>
+        <li>O vídeo entra <b>incorporado</b> (embed), com o resumo dos destaques logo abaixo — como no cartão ao lado.</li>
+        <li>Se preferir, mande só o título e o canal: eu localizo e confirmo antes de publicar.</li>
+      </ul>
     </article></div>
 </section>
 
@@ -1069,6 +1109,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </script>
 <script>
+/* ---------- conversor de moeda ---------- */
+(function(){
+  const el = id => document.getElementById(id);
+  const cny = el('cny'), brl = el('brl'), rt = el('rate'), src = el('rate-src'), bt = el('rate-refresh');
+  if (!cny || !brl) return;
+  let taxa = 0.776;
+  let origem = 'referência fixa de 05/10/2026';
+
+  function pintar(){
+    brl.value = (parseFloat(cny.value || '0') * taxa).toFixed(2);
+    rt.textContent = '1 ¥ = R$ ' + taxa.toFixed(4) + '   ·   R$ 1 = ' + (1/taxa).toFixed(2) + ' ¥';
+    src.textContent = origem;
+  }
+  async function atualizar(){
+    src.textContent = 'buscando cotação…';
+    try {
+      const r = await fetch('https://open.er-api.com/v6/latest/CNY', {cache:'no-store'});
+      const j = await r.json();
+      if (j && j.rates && j.rates.BRL) {
+        taxa = j.rates.BRL;
+        origem = 'open.er-api.com · atualizado em ' + (j.time_last_update_utc || '').replace(' 00:00:01 +0000','');
+        pintar(); return;
+      }
+    } catch (e) {}
+    try {
+      const r2 = await fetch('https://api.frankfurter.app/latest?from=CNY&to=BRL', {cache:'no-store'});
+      const j2 = await r2.json();
+      if (j2 && j2.rates && j2.rates.BRL) {
+        taxa = j2.rates.BRL;
+        origem = 'frankfurter.app (BCE) · ' + j2.date;
+        pintar(); return;
+      }
+    } catch (e) {}
+    origem = 'referência fixa de 05/10/2026 (sem conexão com as APIs)';
+    pintar();
+  }
+  cny.addEventListener('input', pintar);
+  brl.addEventListener('input', () => {
+    const v = parseFloat(brl.value || '0');
+    cny.value = (v / taxa).toFixed(2);
+    rt.textContent = '1 ¥ = R$ ' + taxa.toFixed(4) + '   ·   R$ 1 = ' + (1/taxa).toFixed(2) + ' ¥';
+  });
+  if (bt) bt.addEventListener('click', ev => { ev.preventDefault(); atualizar(); });
+  pintar();
+  atualizar();
+})();
+
 /* ---------- menu hambúrguer ---------- */
 (function(){
   const burger = document.getElementById('burger');
